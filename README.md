@@ -34,7 +34,7 @@ Development requires:
 You can check the latest sources with the command:
 
 ```shell
-git clone URL
+git clone https://github.com/stfukuda/mt-system.git
 ```
 
 ### Enviroment
