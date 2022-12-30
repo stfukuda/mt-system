@@ -14,6 +14,8 @@ exclude = ["src/mts/_msr.py", "src/mts/.gitkeep"]
 [tool.poetry.dependencies]
 python = "^3.8"
 
+scikit-learn = "*"
+
 [tool.poetry.group.dev.dependencies]
 isort = "*"
 black = "*"
