@@ -1,0 +1,37 @@
+[tool.poetry]
+name = "mt-system"
+version = "0.1.0"
+description = "MT system library."
+authors = ["Shota Fukuda <st_fukuda@outlook.jp>"]
+license = "BSD-3-Clause"
+readme = "README.md"
+packages = [
+    {include = "mts", from = "src"},
+]
+include = ["README.md"]
+exclude = ["src/mts/_msr.py", "src/mts/.gitkeep"]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+
+[tool.poetry.group.dev.dependencies]
+isort = "*"
+black = "*"
+flake8 = "*"
+bandit = {extras = ["toml"], version = "*"}
+pre-commit = "*"
+pytest = "*"
+tox = "*"
+sphinx = "*"
+sphinx_rtd_theme = "*"
+
+[tool.isort]
+profile = "black"
+lines_after_imports = 2
+
+[tool.bandit]
+skips = ["B101", "B601"]
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
