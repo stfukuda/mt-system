@@ -29,6 +29,8 @@ pytest-cov = "*"
 sphinx = "*"
 sphinx_rtd_theme = "*"
 
+pandas = "*"
+
 [tool.isort]
 profile = "black"
 lines_after_imports = 2
