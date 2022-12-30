@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "mt-system"
 version = "0.1.0"
-description = "MT system library."
+description = "Python library of MT system."
 authors = ["Shota Fukuda <st_fukuda@outlook.jp>"]
 license = "BSD-3-Clause"
 readme = "README.md"
