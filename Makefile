@@ -27,7 +27,7 @@ lint:
 	-@poetry run bandit -r ./src ./tests
 
 test:
-	@poetry run tox
+	@poetry run pytest
 
 html:
 	@poetry run sphinx-build -b html ./docs/source ./docs
@@ -43,7 +43,6 @@ publish:
 
 clean:
 	-@poetry run pre-commit clean
-	-@rm -rf .tox
 	-@rm -rf dist
 	-@rm -rf htmlcov
 	-@rm -rf .coverage
