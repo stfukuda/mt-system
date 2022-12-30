@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>mts._rt &mdash; MT-system  documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/sphinx_highlight.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+</head>
+
+<body class="wy-body-for-nav">
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html" class="icon icon-home"> MT-system
+          </a>
+              <div class="version">
+                0.1.0
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../start.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../mts.html">Module contents</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">MT-system</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">mts._rt</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+
+  <h1>Source code for mts._rt</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">RT method module.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="c1"># Authors: Shota Fukuda &lt;st_fukuda@outlook.jp&gt;</span>
+<span class="c1"># License: BSD-3-Clause</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">sklearn.base</span> <span class="kn">import</span> <span class="n">BaseEstimator</span>
+<span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">roc_auc_score</span>
+<span class="kn">from</span> <span class="nn">sklearn.utils.validation</span> <span class="kn">import</span> <span class="n">check_is_fitted</span>
+
+
+<div class="viewcode-block" id="RT"><a class="viewcode-back" href="../../mts.html#mts.RT">[docs]</a><span class="k">class</span> <span class="nc">RT</span><span class="p">(</span><span class="n">BaseEstimator</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="o">*</span><span class="p">,</span>
+        <span class="n">ddof</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="n">esp</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1e-16</span><span class="p">,</span>
+        <span class="n">threshold</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">4.0</span><span class="p">,</span>
+        <span class="n">return_sqrt</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        RT method.</span>
+
+<span class="sd">        The RT method is an unsupervised learning method used for pattern</span>
+<span class="sd">        recognition in quality engineering. The method learns the mean value of</span>
+<span class="sd">        each feature in the unit space, the sensitivity and SN ratio of each</span>
+<span class="sd">        sample, and the associated covariance matrix of the sensitivity and SN</span>
+<span class="sd">        ratio, and compute MD values based on these values.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        ddof : int, default=1</span>
+<span class="sd">            It means the delta degree of freedom. The divisor used in the</span>
+<span class="sd">            calculation is `N - ddof`, where `N` is the number of samples.</span>
+
+<span class="sd">        esp : float, default=1e-16</span>
+<span class="sd">            A constant to prevent zero division. In the calculation, it is used</span>
+<span class="sd">            as `1 / (x + esp)`.</span>
+
+<span class="sd">        threshold : float, default=4.0</span>
+<span class="sd">            Threshold. A multiple of the standard deviation of the MD values in</span>
+<span class="sd">            the unit space. IF 4, threshold is 4 sigma.</span>
+
+<span class="sd">        return_sqrt : bool, default=False</span>
+<span class="sd">            Return the square root of the MD values or not.</span>
+
+<span class="sd">        Attributes</span>
+<span class="sd">        ----------</span>
+<span class="sd">        mean_X_ : ndarray of shape (n_features, )</span>
+<span class="sd">            Mean values of training data&#39;s each feature.</span>
+
+<span class="sd">        mean_Y_ : ndarray of shape (2, )</span>
+<span class="sd">            Mean values of sensitivity and error variance reciprocal.</span>
+<span class="sd">            `mean_Y_[0]` is sensitivity mean value, and `mean_Y_[1]` is error</span>
+<span class="sd">            variance reciprocal.</span>
+
+<span class="sd">        covariance_ : ndarray of shape (2, 2)</span>
+<span class="sd">            Variance-covariance matrix of sensitivity and error variance</span>
+<span class="sd">            reciprocal.</span>
+
+<span class="sd">        precision_ : ndarray of shape (2, 2)</span>
+<span class="sd">            Adjoint matrix of `covariance_`.</span>
+
+<span class="sd">        dist_ : ndarray of shape(n_samples, )</span>
+<span class="sd">            Mahalanobis distances of the training set (on which fit is called)</span>
+<span class="sd">            observations.</span>
+
+<span class="sd">        n_features_in_ : int</span>
+<span class="sd">            Number of features seen during fit.</span>
+
+<span class="sd">        feature_names_in_ : ndarray of shape (n_features_in_, )</span>
+<span class="sd">            Names of features seen during fit. Defined only when X has feature</span>
+<span class="sd">            names that are all strings.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ddof</span> <span class="o">=</span> <span class="n">ddof</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">esp</span> <span class="o">=</span> <span class="n">esp</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">threshold</span> <span class="o">=</span> <span class="n">threshold</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">return_sqrt</span> <span class="o">=</span> <span class="n">return_sqrt</span>
+
+<div class="viewcode-block" id="RT.fit"><a class="viewcode-back" href="../../mts.html#mts.RT.fit">[docs]</a>    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Fit the model.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X : ndarray of shape (n_samples, n_features)</span>
+<span class="sd">            Training data.</span>
+
+<span class="sd">        y : None</span>
+<span class="sd">            Ignored.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        self : object</span>
+<span class="sd">            Fitted model.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">X</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_validate_data</span><span class="p">(</span>
+            <span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">,</span>
+            <span class="n">reset</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">ensure_min_samples</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+            <span class="n">ensure_min_features</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+            <span class="n">estimator</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">mean_X_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+        <span class="n">Y</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_compute_Y</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">mean_X_</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">mean_Y_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">Y</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+        <span class="n">std_Y</span> <span class="o">=</span> <span class="n">Y</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">mean_Y_</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="p">:]</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">covariance_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cov</span><span class="p">(</span><span class="n">std_Y</span><span class="p">,</span> <span class="n">rowvar</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">ddof</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">ddof</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">precision_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_precision</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">covariance_</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">dist_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mahalanobis</span><span class="p">(</span><span class="n">Y</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">mean_Y_</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">precision_</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">sigma_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dist_</span><span class="p">))</span>
+
+        <span class="k">return</span> <span class="bp">self</span></div>
+
+<div class="viewcode-block" id="RT.predict"><a class="viewcode-back" href="../../mts.html#mts.RT.predict">[docs]</a>    <span class="k">def</span> <span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Predict labels of X according to fitted model.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X : ndarray of shape (n_samples, n_features)</span>
+<span class="sd">            Samples.</span>
+
+<span class="sd">        y : None</span>
+<span class="sd">            Ignored.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        labels : ndarray of shape (n_samples, )</span>
+<span class="sd">            Returns 1 for anomalies/outliers and 0 for inliers.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">check_is_fitted</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+        <span class="n">threshold</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">threshold</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">sigma_</span>
+
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mahalanobis</span><span class="p">(</span><span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="n">threshold</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="RT.fit_predict"><a class="viewcode-back" href="../../mts.html#mts.RT.fit_predict">[docs]</a>    <span class="k">def</span> <span class="nf">fit_predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Perform fit on X and returns labels for X.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X : ndarray of shape (n_samples, n_features)</span>
+<span class="sd">            Input data.</span>
+
+<span class="sd">        y : None</span>
+<span class="sd">            Ignored.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        labels : ndarray of shape (n_samples, )</span>
+<span class="sd">            Returns 1 for anomalies/outliers and 0 for inliers.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">)</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="RT.mahalanobis"><a class="viewcode-back" href="../../mts.html#mts.RT.mahalanobis">[docs]</a>    <span class="k">def</span> <span class="nf">mahalanobis</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Compute the mahalanobis distances (MD values).</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X : ndarray of shape (n_samples, n_features)</span>
+<span class="sd">            Samples.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        MD : ndarray of shape (n_samples, )</span>
+<span class="sd">            Mahalanobis distances (MD values).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">check_is_fitted</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+        <span class="n">X</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_validate_data</span><span class="p">(</span><span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">,</span> <span class="n">reset</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+        <span class="n">Y</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_compute_Y</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">mean_X_</span><span class="p">)</span>
+
+        <span class="n">MD</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mahalanobis</span><span class="p">(</span><span class="n">Y</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">mean_Y_</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">precision_</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">return_sqrt</span><span class="p">:</span>
+            <span class="n">MD</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">MD</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">MD</span></div>
+
+<div class="viewcode-block" id="RT.score"><a class="viewcode-back" href="../../mts.html#mts.RT.score">[docs]</a>    <span class="k">def</span> <span class="nf">score</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return the ROCAUC on the given test data and labels.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X : ndarray of shape (n_samples, n_features)</span>
+<span class="sd">            Test samples.</span>
+
+<span class="sd">        y : ndarray of shape (n_samples, )</span>
+<span class="sd">            True labels for X. 1 for anomalies/outliers and 0 for inliers.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        score : float</span>
+<span class="sd">            ROCAUC.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">check_is_fitted</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+        <span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_validate_data</span><span class="p">(</span><span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">,</span> <span class="n">reset</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">roc_auc_score</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">mahalanobis</span><span class="p">(</span><span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="RT.score_samples"><a class="viewcode-back" href="../../mts.html#mts.RT.score_samples">[docs]</a>    <span class="k">def</span> <span class="nf">score_samples</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Compute the mahalanobis distandes (MD values).</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X : ndarray of shape (n_samples, n_features)</span>
+<span class="sd">            Samples.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        MD : ndarray of shape (n_samples, )</span>
+<span class="sd">            MD values.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">check_is_fitted</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">mahalanobis</span><span class="p">(</span><span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">_compute_Y</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">mean_X</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Compute the sensitivity and SN ratio as Y.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X : ndarray of shape (n_samples, n_features)</span>
+<span class="sd">            Samples.</span>
+
+<span class="sd">        mean_X : ndarray of shape (n_features, )</span>
+<span class="sd">            Mean values of the unit space.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        Y : ndarray of shape (n_samples, 2)</span>
+<span class="sd">            Sensitivity and SN ratio. Where Y[i, 0] is the sensitivity of the</span>
+<span class="sd">            i-th sample and Y[i, 1] is the SN ratio of the i-th sample.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">std_X</span> <span class="o">=</span> <span class="n">X</span> <span class="o">-</span> <span class="n">mean_X</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="p">:]</span>
+
+        <span class="n">r</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">mean_X</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+        <span class="n">L</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">std_X</span><span class="p">,</span> <span class="n">mean_X</span><span class="p">)</span>
+        <span class="n">st</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">std_X</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">sb</span> <span class="o">=</span> <span class="p">(</span><span class="n">L</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">r</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">esp</span><span class="p">)</span>
+        <span class="n">se</span> <span class="o">=</span> <span class="n">st</span> <span class="o">-</span> <span class="n">sb</span>
+        <span class="n">ve</span> <span class="o">=</span> <span class="n">se</span> <span class="o">/</span> <span class="p">(</span><span class="n">std_X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">y1</span> <span class="o">=</span> <span class="n">L</span> <span class="o">/</span> <span class="p">(</span><span class="n">r</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">esp</span><span class="p">)</span>
+        <span class="n">y2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">ve</span><span class="p">)</span>
+        <span class="n">Y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">([</span><span class="n">y1</span><span class="p">[:,</span> <span class="kc">None</span><span class="p">],</span> <span class="n">y2</span><span class="p">[:,</span> <span class="kc">None</span><span class="p">]])</span>
+
+        <span class="k">return</span> <span class="n">Y</span>
+
+    <span class="k">def</span> <span class="nf">_get_precision</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">covariance</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Compute precision from covariance.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        covariance : ndarray of shape (n_features, n_features)</span>
+<span class="sd">            Covariance matorix of the unit space.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        precision : ndarray of shape (n_features, n_features)</span>
+<span class="sd">            Adjoint matrix of covariance.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">precision</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+        <span class="n">precision</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">covariance</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+        <span class="n">precision</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="n">covariance</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+        <span class="n">precision</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="n">covariance</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+        <span class="n">precision</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">covariance</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+
+        <span class="k">return</span> <span class="n">precision</span>
+
+    <span class="k">def</span> <span class="nf">_mahalanobis</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">mean_Y</span><span class="p">,</span> <span class="n">precision</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Computes MD values.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        Y : ndarray of shape (n_samples, 2)</span>
+<span class="sd">            Sensitivity and SN ratio of samples.</span>
+
+<span class="sd">        mean_Y : ndarray of shape (2, )</span>
+<span class="sd">            Mean values of Y in the unit space.</span>
+
+<span class="sd">        precision : ndarray of shape (2, 2), default=None</span>
+<span class="sd">            Adjoint matrix of covariance in the unti space.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        MD : ndarray of shape (n_samples, )</span>
+<span class="sd">            Mahalanobis distances (MD values).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">std_Y</span> <span class="o">=</span> <span class="n">Y</span> <span class="o">-</span> <span class="n">mean_Y</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="p">:]</span>
+
+        <span class="n">MD</span> <span class="o">=</span> <span class="p">(</span><span class="n">std_Y</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">precision</span><span class="p">)</span> <span class="o">*</span> <span class="n">std_Y</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">return_sqrt</span><span class="p">:</span>
+            <span class="n">MD</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">MD</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">MD</span>
+
+    <span class="k">def</span> <span class="nf">_more_tags</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;binary_only&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">}</span></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Shota Fukuda &lt;st_fukuda@outlook.jp&gt;.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+</body>
+</html>

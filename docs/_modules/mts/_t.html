@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>mts._t &mdash; MT-system  documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/sphinx_highlight.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+</head>
+
+<body class="wy-body-for-nav">
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html" class="icon icon-home"> MT-system
+          </a>
+              <div class="version">
+                0.1.0
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../start.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../mts.html">Module contents</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">MT-system</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">mts._t</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+
+  <h1>Source code for mts._t</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">T(1), T(2), Ta and Tb methods module.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="c1"># Authors: Shota Fukuda &lt;st_fukuda@outlook.jp&gt;</span>
+<span class="c1"># License: BSD-3-Clause</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">sklearn.base</span> <span class="kn">import</span> <span class="n">BaseEstimator</span><span class="p">,</span> <span class="n">RegressorMixin</span>
+<span class="kn">from</span> <span class="nn">sklearn.utils.validation</span> <span class="kn">import</span> <span class="n">check_is_fitted</span>
+
+
+<div class="viewcode-block" id="T"><a class="viewcode-back" href="../../mts.html#mts.T">[docs]</a><span class="k">class</span> <span class="nc">T</span><span class="p">(</span><span class="n">BaseEstimator</span><span class="p">,</span> <span class="n">RegressorMixin</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">tb</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">esp</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1e-16</span><span class="p">,</span> <span class="n">is_simplified</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        T(1), T(2), Ta and Tb methods.</span>
+
+<span class="sd">        The T(1), T(2), Ta and Tb methods are supervised learning methods used</span>
+<span class="sd">        for regression in quality engineering. The T(1) and T(2) methods divide</span>
+<span class="sd">        the training data into unit space and signal data, and learn the mean</span>
+<span class="sd">        value from the unit space and the sensitivity and SN ratio from the</span>
+<span class="sd">        signal data. The Ta method does not divide the training data into unit</span>
+<span class="sd">        space and signal data, and learns the mean value, sensitivity, and SN</span>
+<span class="sd">        ratio from the all training data. The Tb method also learns from all</span>
+<span class="sd">        training data, but for each item, the sample with the largest SN ratio</span>
+<span class="sd">        is used as the mean value.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        tb : bool, default=False</span>
+<span class="sd">            Whether to computes as Tb method. If False, compute as T(1), T(s)</span>
+<span class="sd">            and Ta methods.</span>
+
+<span class="sd">        esp : float, default=1e-16</span>
+<span class="sd">            A constant to prevent zero division. In the calculation, it is used</span>
+<span class="sd">            as `1 / (x + esp)`.</span>
+
+<span class="sd">        is_simplified : bool, default=False</span>
+<span class="sd">            Compute the SN ratio with the simplified formula or not. The</span>
+<span class="sd">            simplified formula computes with `b**2 / ve`.</span>
+
+<span class="sd">        Attributes</span>
+<span class="sd">        ----------</span>
+<span class="sd">        mean_X_ : ndarray of shape (n_features, )</span>
+<span class="sd">            Mean values of training data&#39;s each feature.</span>
+
+<span class="sd">        mean_y_ : float or ndarray of shape (n_features, )</span>
+<span class="sd">            Mean value of target values.</span>
+
+<span class="sd">        n_ : ndarray of shape (n_features, )</span>
+<span class="sd">            SN ratio between each feature and the target values.</span>
+
+<span class="sd">        b_ : ndarray of shape (n_features, )</span>
+<span class="sd">            Sensitivity between each feature and target values.</span>
+
+<span class="sd">        n_features_in_ : int</span>
+<span class="sd">            Number of features seen during fit.</span>
+
+<span class="sd">        feature_names_in_ : ndarray of shape (n_features_in_, )</span>
+<span class="sd">            Names of features seen during fit. Defined only when X has feature</span>
+<span class="sd">            names that are all strings.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tb</span> <span class="o">=</span> <span class="n">tb</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">esp</span> <span class="o">=</span> <span class="n">esp</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">is_simplified</span> <span class="o">=</span> <span class="n">is_simplified</span>
+
+<div class="viewcode-block" id="T.fit"><a class="viewcode-back" href="../../mts.html#mts.T.fit">[docs]</a>    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">us_idx</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Fit the model.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X : ndarray of shape (n_samples, n_features)</span>
+<span class="sd">            Training data. Includes unit space and signal data.</span>
+
+<span class="sd">        y : ndarray of shape (n_samples, )</span>
+<span class="sd">            Target values. Will be cast to X&#39;s dtype if necessary.</span>
+
+<span class="sd">        us_idx : array_like of shape (n_samples, ) or None, default=None.</span>
+<span class="sd">            A binary array indicating which sample of the training data is the</span>
+<span class="sd">            unit space (0 for the unit space, 1 for the signal data); if None,</span>
+<span class="sd">            the training data is not divided into the unit space and the signal</span>
+<span class="sd">            data, but is computed as the Ta method. It is ignored when computing</span>
+<span class="sd">            as the Tb method.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        self : object</span>
+<span class="sd">            Fitted model.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_validate_data</span><span class="p">(</span>
+            <span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">,</span>
+            <span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">,</span>
+            <span class="n">reset</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">y_numeric</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">estimator</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">tb</span><span class="p">:</span>
+            <span class="n">n</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty_like</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+            <span class="n">b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty_like</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">x_i</span><span class="p">,</span> <span class="n">y_i</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)):</span>
+                <span class="n">std_X</span> <span class="o">=</span> <span class="n">X</span> <span class="o">-</span> <span class="n">x_i</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="p">:]</span>
+                <span class="n">std_y</span> <span class="o">=</span> <span class="n">y</span> <span class="o">-</span> <span class="n">y_i</span>
+
+                <span class="n">n</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">b</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_compute_sn_ratio_and_sensitivity</span><span class="p">(</span><span class="n">std_X</span><span class="p">,</span> <span class="n">std_y</span><span class="p">)</span>
+
+            <span class="n">idx_row</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+            <span class="n">idx_col</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">mean_X_</span> <span class="o">=</span> <span class="n">X</span><span class="p">[</span><span class="n">idx_row</span><span class="p">,</span> <span class="n">idx_col</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">mean_y_</span> <span class="o">=</span> <span class="n">y</span><span class="p">[</span><span class="n">idx_row</span><span class="p">]</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">b_</span> <span class="o">=</span> <span class="n">b</span><span class="p">[</span><span class="n">idx_row</span><span class="p">,</span> <span class="n">idx_col</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">n_</span> <span class="o">=</span> <span class="n">n</span><span class="p">[</span><span class="n">idx_row</span><span class="p">,</span> <span class="n">idx_col</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">us_idx</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">mean_X_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">mean_y_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+
+                <span class="n">std_X</span> <span class="o">=</span> <span class="n">X</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">mean_X_</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="p">:]</span>
+                <span class="n">std_y</span> <span class="o">=</span> <span class="n">y</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">mean_y_</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">unit_space_mask</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">us_idx</span> <span class="o">==</span> <span class="mi">0</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+
+                <span class="bp">self</span><span class="o">.</span><span class="n">mean_X_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="n">unit_space_mask</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">mean_y_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">y</span><span class="p">[</span><span class="n">unit_space_mask</span><span class="p">])</span>
+
+                <span class="n">std_X</span> <span class="o">=</span> <span class="n">X</span><span class="p">[</span><span class="o">~</span><span class="n">unit_space_mask</span><span class="p">]</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">mean_X_</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="p">:]</span>
+                <span class="n">std_y</span> <span class="o">=</span> <span class="n">X</span><span class="p">[</span><span class="o">~</span><span class="n">unit_space_mask</span><span class="p">]</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">mean_y_</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">n_</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">b_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_compute_sn_ratio_and_sensitivity</span><span class="p">(</span><span class="n">std_X</span><span class="p">,</span> <span class="n">std_y</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="bp">self</span></div>
+
+<div class="viewcode-block" id="T.predict"><a class="viewcode-back" href="../../mts.html#mts.T.predict">[docs]</a>    <span class="k">def</span> <span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Precit using fitted model.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X : ndarray of shape (n_samples, n_features)</span>
+<span class="sd">            Samples.</span>
+
+<span class="sd">        y : None</span>
+<span class="sd">            Ignored.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        y_pred : ndarray of shape (n_samples, )</span>
+<span class="sd">            Predict values.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">check_is_fitted</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+        <span class="n">X</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_validate_data</span><span class="p">(</span><span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">,</span> <span class="n">reset</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">estimator</span><span class="o">=</span><span class="bp">self</span><span class="p">)</span>
+
+        <span class="n">std_X</span> <span class="o">=</span> <span class="n">X</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">mean_X_</span>
+
+        <span class="n">M_pred</span> <span class="o">=</span> <span class="n">std_X</span> <span class="o">/</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">b_</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">esp</span><span class="p">)[</span><span class="kc">None</span><span class="p">,</span> <span class="p">:]</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">tb</span><span class="p">:</span>
+            <span class="n">y_pred</span> <span class="o">=</span> <span class="n">M_pred</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">mean_y_</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="p">:]</span>  <span class="c1"># type: ignore</span>
+            <span class="n">y_pred</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">y_pred</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_</span><span class="p">)</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">esp</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">M_pred</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">M_pred</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_</span><span class="p">)</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">esp</span><span class="p">)</span>
+            <span class="n">y_pred</span> <span class="o">=</span> <span class="n">M_pred</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">mean_y_</span>
+
+        <span class="k">return</span> <span class="n">y_pred</span></div>
+
+<div class="viewcode-block" id="T.score"><a class="viewcode-back" href="../../mts.html#mts.T.score">[docs]</a>    <span class="k">def</span> <span class="nf">score</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return the SN ratio of overall estimate.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X : ndarray of shape (n_samples, n_features)</span>
+<span class="sd">            Test samples.</span>
+
+<span class="sd">        y : ndarray of shape (n_samples, )</span>
+<span class="sd">            True values for X.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        n : float</span>
+<span class="sd">            SN ratio of overall estimation. For the T(1), T(2), and Ta methods,</span>
+<span class="sd">            it is computed from M_True and M_Pred, and for the Tb method, it is</span>
+<span class="sd">            computed from y_True and y_Pred.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">check_is_fitted</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+        <span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_validate_data</span><span class="p">(</span><span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">,</span> <span class="n">reset</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">tb</span><span class="p">:</span>
+            <span class="n">M_true</span> <span class="o">=</span> <span class="n">y</span>
+            <span class="n">M_pred</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">M_true</span> <span class="o">=</span> <span class="n">y</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">mean_y_</span>
+            <span class="n">M_pred</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X</span><span class="p">)</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">mean_y_</span>
+
+        <span class="n">r</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">M_true</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+        <span class="n">L</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">M_true</span><span class="p">,</span> <span class="n">M_pred</span><span class="p">)</span>
+        <span class="n">st</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">M_pred</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">sb</span> <span class="o">=</span> <span class="p">(</span><span class="n">L</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">r</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">esp</span><span class="p">)</span>
+        <span class="n">se</span> <span class="o">=</span> <span class="n">st</span> <span class="o">-</span> <span class="n">sb</span>
+        <span class="n">ve</span> <span class="o">=</span> <span class="n">se</span> <span class="o">/</span> <span class="p">(</span><span class="n">M_true</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+
+        <span class="n">n</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="n">r</span> <span class="o">*</span> <span class="p">(</span><span class="n">sb</span> <span class="o">-</span> <span class="n">ve</span><span class="p">))</span> <span class="o">/</span> <span class="p">(</span><span class="n">ve</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">esp</span><span class="p">)</span>
+        <span class="n">n</span> <span class="o">=</span> <span class="mi">10</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">n</span></div>
+
+    <span class="k">def</span> <span class="nf">_compute_sn_ratio_and_sensitivity</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Compute the SN ratio and sensitivity.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X : ndarray of shape (n_samples, n_features)</span>
+<span class="sd">            Samples.</span>
+
+<span class="sd">        y : ndarray of shape (n_samples, )</span>
+<span class="sd">            Target values.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        n : ndarray of shape (n_features, )</span>
+<span class="sd">            _description_</span>
+
+<span class="sd">        b : ndarray of shape (n_features, )</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">r</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">y</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+        <span class="n">L</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+        <span class="n">st</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">X</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">sb</span> <span class="o">=</span> <span class="p">(</span><span class="n">L</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">r</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">esp</span><span class="p">)</span>
+        <span class="n">se</span> <span class="o">=</span> <span class="n">st</span> <span class="o">-</span> <span class="n">sb</span>
+        <span class="n">ve</span> <span class="o">=</span> <span class="n">se</span> <span class="o">/</span> <span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+
+        <span class="n">b</span> <span class="o">=</span> <span class="n">L</span> <span class="o">/</span> <span class="p">(</span><span class="n">r</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">esp</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_simplified</span><span class="p">:</span>
+            <span class="n">n</span> <span class="o">=</span> <span class="p">(</span><span class="n">b</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">ve</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">esp</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">n</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="n">r</span> <span class="o">*</span> <span class="p">(</span><span class="n">sb</span> <span class="o">-</span> <span class="n">ve</span><span class="p">))</span> <span class="o">/</span> <span class="p">(</span><span class="n">ve</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">esp</span><span class="p">)</span>
+            <span class="n">mask</span> <span class="o">=</span> <span class="n">sb</span> <span class="o">&lt;=</span> <span class="n">ve</span>
+            <span class="n">n</span><span class="p">[</span><span class="n">mask</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="k">return</span> <span class="n">n</span><span class="p">,</span> <span class="n">b</span></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Shota Fukuda &lt;st_fukuda@outlook.jp&gt;.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+</body>
+</html>

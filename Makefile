@@ -9,28 +9,28 @@ install:
 	@git add poetry.lock
 	@git commit -m "Add poetry.lock"
 	@git checkout -b develop
-	@poetry run pre-commit install
-	@poetry run pre-commit autoupdate
+	@pre-commit install
+	@pre-commit autoupdate
 	@git add .pre-commit-config.yaml
 	@git commit -m "Update hooks revision or tag"
 
 update:
 	@poetry update
-	@poetry run pre-commit autoupdate
+	@pre-commit autoupdate
 
 format:
-	-@poetry run isort ./src ./tests
-	-@poetry run black ./src ./tests
+	-@isort ./src ./tests
+	-@black ./src ./tests
 
 lint:
-	-@poetry run flake8 ./src ./tests --color auto
-	-@poetry run bandit -r ./src ./tests
+	-@flake8 ./src ./tests --color auto
+	-@bandit -r ./src ./tests
 
 test:
-	@poetry run tox
+	@pytest --cov=mts --cov-append --cov-report=term-missing --cov-report=html
 
 html:
-	@poetry run sphinx-build -b html ./docs/source ./docs
+	@sphinx-build -b html ./docs/source ./docs
 
 build:
 	@poetry build
@@ -42,8 +42,7 @@ publish:
 	@poetry publish
 
 clean:
-	-@poetry run pre-commit clean
-	-@rm -rf .tox
+	-@pre-commit clean
 	-@rm -rf dist
 	-@rm -rf htmlcov
 	-@rm -rf .coverage

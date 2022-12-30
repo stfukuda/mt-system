@@ -1,6 +1,6 @@
 # MT-system
 
-MT system library.
+Python library of MT system.
 
 ## Dependencies
 
