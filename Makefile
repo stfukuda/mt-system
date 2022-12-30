@@ -27,7 +27,7 @@ lint:
 	-@bandit -r ./src ./tests
 
 test:
-	@pytest
+	@pytest --cov=mts --cov-append --cov-report=term-missing --cov-report=html
 
 html:
 	@sphinx-build -b html ./docs/source ./docs
