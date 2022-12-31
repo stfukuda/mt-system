@@ -7,13 +7,12 @@ on:
     branches: ["main"]
 
 jobs:
-  build:
+  test:
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
         python-version: ["3.8", "3.9", "3.10", "3.11"]
-
     steps:
       - uses: actions/checkout@v3
       - name: Set up Python ${{ matrix.python-version }}
@@ -29,4 +28,20 @@ jobs:
           poetry install
       - name: Test with pytest
         run: |
-          poetry run pytest
+          poetry run pytest tests --junit-xml results/pytest.xml
+      - name: Upload Test Results
+        if: ${{ always() }}
+        uses: actions/upload-artifact@v2
+        with:
+          name: Test Results (Python ${{ matrix.python-version }})
+          path: results/*.xml
+      - name: Download Artifacts
+        if: success() || failure()
+        uses: actions/download-artifact@v2
+        with:
+          path: artifacts
+      - name: Publish Test Results
+        uses: EnricoMi/publish-unit-test-result-action@v2
+        if: ${{ always() }}
+        with:
+          junit_files: artifacts/**/*.xml
