@@ -40,6 +40,7 @@ jobs:
         uses: github/codeql-action/init@v2
         with:
           languages: ${{ matrix.language }}
+          config-file: ./.github/codeql/codeql-config.yml
           setup-python-dependencies: false
       - name: Autobuild
         uses: github/codeql-action/autobuild@v2
