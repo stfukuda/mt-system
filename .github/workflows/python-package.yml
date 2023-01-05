@@ -25,7 +25,7 @@ jobs:
           echo "$HOME/.poetry/bin" >> $GITHUB_PATH
       - name: Install Dependencies
         run: |
-          poetry install
+          poetry install --with dev test
       - name: Test with pytest
         run: |
           poetry run pytest tests --junit-xml results/pytest.xml
