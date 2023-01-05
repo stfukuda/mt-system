@@ -1,0 +1,68 @@
+name: Test Results
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+
+permissions: {}
+
+jobs:
+  setup-and-test:
+    name: Build and Test (Python ${{ matrix.python-version }})
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.8", "3.9", "3.10", "3.11"]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v3
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Setup Poetry
+        run: |
+          curl -sSL https://install.python-poetry.org | python3 -
+          echo "$HOME/.poetry/bin" >> $GITHUB_PATH
+
+      - name: Install Dependencies
+        run: |
+          poetry install --with dev,test
+
+      - name: Test with pytest
+        run: |
+          poetry run pytest --cov=src --cov-report=term-missing --junit-xml results/pytest.xml
+        continue-on-error: true
+
+      - name: Upload Test Results
+        if: always()
+        uses: actions/upload-artifact@v2
+        with:
+          name: Test Results (Python ${{ matrix.python-version }})
+          path: results/*.xml
+
+  publish-test-results:
+    name: Publish Test Results
+    needs: setup-and-test
+    runs-on: ubuntu-latest
+    permissions:
+      checks: write
+      pull-requests: write
+    if: always()
+    steps:
+      - name: Download Artifacts
+        uses: actions/download-artifact@v2
+        with:
+          path: artifacts
+
+      - name: Publish Test Results
+        uses: EnricoMi/publish-unit-test-result-action@v2
+        with:
+          junit_files: artifacts/**/*.xml
