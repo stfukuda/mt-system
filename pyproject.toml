@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "mt-system"
-version = "0.0.0"
+version = "0.0.0"  # use poetry-dynamic-versioning
 description = "Python library of MT system."
 authors = ["Shota Fukuda <st_fukuda@outlook.jp>"]
 license = "BSD-3-Clause"
@@ -37,6 +37,9 @@ sphinx_rtd_theme = "*"
 
 [tool.poetry-dynamic-versioning]
 enable = true
+
+[tool.poetry-dynamic-versioning.substitution]
+folders = [{path="docs/source"}]
 
 [tool.isort]
 profile = "black"
