@@ -7,6 +7,7 @@ RUN apt update && \
     apt install gnupg2 locales -y && \
     echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen && \
     locale-gen && \
-    pip install -U pip setuptools wheel poetry
+    pip install -U pip setuptools wheel poetry && \
+    poetry self add "poetry-dynamic-versioning[plugin]"
 
 ENV LANG=en_US.UTF-8
