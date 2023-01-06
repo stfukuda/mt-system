@@ -70,7 +70,7 @@
 				"isort.check": true,
 				"isort.importStrategy": "fromEnvironment",
 				"isort.path": [
-					"${workspaceFolder}/.venv/bin/isort"
+					"/usr/local/bin/isort"
 				],
 				"python.analysis.completeFunctionParens": true,
 				"python.analysis.extraPaths": [
