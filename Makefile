@@ -1,4 +1,4 @@
-.PHONY: setup, update, format, lint, test, html, build, publish-test, publish, clean
+.PHONY: setup, install, update, format, lint, test, html, build, publish-test, publish, clean
 
 setup:
 	@git init
@@ -13,6 +13,10 @@ setup:
 	@pre-commit autoupdate
 	@git add .pre-commit-config.yaml
 	@git commit -m "Update hooks revision or tag"
+
+install:
+	@poetry install --with dev,cqa,test,docs
+	@pre-commit install
 
 update:
 	@poetry update
