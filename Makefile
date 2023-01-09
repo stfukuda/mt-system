@@ -37,6 +37,7 @@ html:
 	@sphinx-build -b html ./docs/source ./docs
 
 build:
+	@git checkout main
 	@poetry build
 
 publish-test:
