@@ -1,11 +1,11 @@
-.PHONY: install, update, format, lint, test, html, build, publish-test, publish, clean
+.PHONY: setup, update, format, lint, test, html, build, publish-test, publish, clean
 
-install:
+setup:
 	@git init
 	@git commit --allow-empty -m "Initial commit"
 	@git add .
 	@git commit -m "Add template folder"
-	@poetry install
+	@poetry install --with dev,cqa,test,docs
 	@git add poetry.lock
 	@git commit -m "Add poetry.lock"
 	@git checkout -b develop
