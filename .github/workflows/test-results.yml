@@ -3,9 +3,6 @@ name: Test Results
 on:
   pull_request:
     branches: ["main"]
-    paths:
-      - "src/**/*.py"
-      - "tests/**/*.py"
 
 permissions: {}
 
