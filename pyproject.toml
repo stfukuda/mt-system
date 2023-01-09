@@ -1,10 +1,11 @@
 [tool.poetry]
 name = "mt-system"
-version = "0.1.0"
+version = "0.0.0"  # use poetry-dynamic-versioning
 description = "Python library of MT system."
 authors = ["Shota Fukuda <st_fukuda@outlook.jp>"]
 license = "BSD-3-Clause"
 readme = "README.md"
+homepage = "https://github.com/stfukuda/mt-system.git"
 repository = "https://github.com/stfukuda/mt-system.git"
 documentation = "https://stfukuda.github.io/mt-system/"
 packages = [
@@ -35,6 +36,12 @@ pytest-cov = "*"
 sphinx = "*"
 sphinx_rtd_theme = "*"
 
+[tool.poetry-dynamic-versioning]
+enable = true
+
+[tool.poetry-dynamic-versioning.substitution]
+folders = [{path="docs/source"}]
+
 [tool.isort]
 profile = "black"
 lines_after_imports = 2
@@ -43,5 +50,5 @@ lines_after_imports = 2
 skips = ["B101", "B601"]
 
 [build-system]
-requires = ["poetry-core>=1.0.0"]
-build-backend = "poetry.core.masonry.api"
+requires = ["poetry-core>=1.0.0", "poetry-dynamic-versioning"]
+build-backend = "poetry_dynamic_versioning.backend"
