@@ -1,11 +1,6 @@
 name: Test Results
 
 on:
-  push:
-    branches: ["main"]
-    paths:
-      - "src/**/*.py"
-      - "tests/**/*.py"
   pull_request:
     branches: ["main"]
     paths:
