@@ -5,6 +5,7 @@ description = "Python library of MT system."
 authors = ["Shota Fukuda <st_fukuda@outlook.jp>"]
 license = "BSD-3-Clause"
 readme = "README.md"
+homepage = "https://github.com/stfukuda/mt-system.git"
 repository = "https://github.com/stfukuda/mt-system.git"
 documentation = "https://stfukuda.github.io/mt-system/"
 packages = [
