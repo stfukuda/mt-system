@@ -18,8 +18,14 @@ exclude = ["src/mts/_msr.py", "src/mts/.gitkeep"]
 python = "^3.8"
 scikit-learn = "*"
 
+[tool.poetry.group.dev]
+optional = true
+
 [tool.poetry.group.dev.dependencies]
 pandas = "*"
+
+[tool.poetry.group.cqa]
+optional = true
 
 [tool.poetry.group.cqa.dependencies]
 isort = "*"
@@ -28,9 +34,15 @@ flake8 = "*"
 bandit = {extras = ["toml"], version = "*"}
 pre-commit = "*"
 
+[tool.poetry.group.test]
+optional = true
+
 [tool.poetry.group.test.dependencies]
 pytest = "*"
 pytest-cov = "*"
+
+[tool.poetry.group.docs]
+optional = true
 
 [tool.poetry.group.docs.dependencies]
 sphinx = "*"
