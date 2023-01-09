@@ -42,7 +42,8 @@ publish:
 	@poetry publish
 
 clean:
-	-@pre-commit clean
+	-@rm -rf .pytest_cache
 	-@rm -rf dist
 	-@rm -rf htmlcov
+	-@find ./ -name "__pycache__" -exec rm -rf {} \;
 	-@rm -rf .coverage
