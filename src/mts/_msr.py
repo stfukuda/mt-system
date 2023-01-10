@@ -11,7 +11,7 @@ from sklearn.model_selection import KFold
 from sklearn.utils.validation import check_is_fitted
 
 
-class MSR(BaseEstimator, RegressorMixin):
+class MSR(RegressorMixin, BaseEstimator):
     def __init__(self, *, delta: float = 1e-4, esp: float = 1e-16):
         """
         MSR: Multiple Simple Regression.
