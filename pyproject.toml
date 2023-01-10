@@ -12,7 +12,6 @@ packages = [
     {include = "mts", from = "src"},
 ]
 include = ["README.md"]
-exclude = ["src/mts/_msr.py", "src/mts/.gitkeep"]
 
 [tool.poetry.dependencies]
 python = "^3.8"
