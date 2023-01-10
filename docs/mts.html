@@ -31,7 +31,7 @@
             <a href="index.html" class="icon icon-home"> MT-system
           </a>
               <div class="version">
-                0.1.0
+                0.0.0
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -44,6 +44,16 @@
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="start.html">Getting Started</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Module contents</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#mts.MSR"><code class="docutils literal notranslate"><span class="pre">MSR</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#mts.MSR.mean_X_"><code class="docutils literal notranslate"><span class="pre">MSR.mean_X_</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#mts.MSR.mean_y_"><code class="docutils literal notranslate"><span class="pre">MSR.mean_y_</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#mts.MSR.coef_"><code class="docutils literal notranslate"><span class="pre">MSR.coef_</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#mts.MSR.n_features_in_"><code class="docutils literal notranslate"><span class="pre">MSR.n_features_in_</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#mts.MSR.feature_names_in_"><code class="docutils literal notranslate"><span class="pre">MSR.feature_names_in_</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#mts.MSR.fit"><code class="docutils literal notranslate"><span class="pre">MSR.fit()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#mts.MSR.predict"><code class="docutils literal notranslate"><span class="pre">MSR.predict()</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="#mts.MT"><code class="docutils literal notranslate"><span class="pre">MT</span></code></a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#mts.MT.mean_"><code class="docutils literal notranslate"><span class="pre">MT.mean_</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#mts.MT.scale_"><code class="docutils literal notranslate"><span class="pre">MT.scale_</span></code></a></li>
@@ -120,6 +130,121 @@
 <span id="module-contents"></span><h1>Module contents<a class="headerlink" href="#module-mts" title="Permalink to this heading"></a></h1>
 <p>The ‘mts’ module contains various methods of the MT system.</p>
 <dl class="py class">
+<dt class="sig sig-object py" id="mts.MSR">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mts.</span></span><span class="sig-name descname"><span class="pre">MSR</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delta</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.0001</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">esp</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1e-16</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mts/_msr.html#MSR"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mts.MSR" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">RegressorMixin</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseEstimator</span></code></p>
+<p>MSR: Multiple Simple Regression.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>delta</strong> (<em>float</em><em>, </em><em>default=1e-4</em>) – Threshold for stopping repeated comuputes.</p></li>
+<li><p><strong>esp</strong> (<em>float</em><em>, </em><em>default=1e-16</em>) – A constant to prevent zero division. In the calculation, it is used
+as <cite>1 / (x + esp)</cite>.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="mts.MSR.mean_X_">
+<span class="sig-name descname"><span class="pre">mean_X_</span></span><a class="headerlink" href="#mts.MSR.mean_X_" title="Permalink to this definition"></a></dt>
+<dd><p>Mean values of each feature of the training data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>ndarray of shape(n_features, )</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="mts.MSR.mean_y_">
+<span class="sig-name descname"><span class="pre">mean_y_</span></span><a class="headerlink" href="#mts.MSR.mean_y_" title="Permalink to this definition"></a></dt>
+<dd><p>Mean value of true values for <cite>X</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="mts.MSR.coef_">
+<span class="sig-name descname"><span class="pre">coef_</span></span><a class="headerlink" href="#mts.MSR.coef_" title="Permalink to this definition"></a></dt>
+<dd><p>Estimated coefficients for the MSR.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>ndarray of shape (n_features, )</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="mts.MSR.n_features_in_">
+<span class="sig-name descname"><span class="pre">n_features_in_</span></span><a class="headerlink" href="#mts.MSR.n_features_in_" title="Permalink to this definition"></a></dt>
+<dd><p>Number of features seen during fit.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="mts.MSR.feature_names_in_">
+<span class="sig-name descname"><span class="pre">feature_names_in_</span></span><a class="headerlink" href="#mts.MSR.feature_names_in_" title="Permalink to this definition"></a></dt>
+<dd><p>Names of features seen during fit. Defined only when X has feature
+names that are all strings.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>ndarray of shape (<a href="#id1"><span class="problematic" id="id2">n_features_in_</span></a>, )</p>
+</dd>
+</dl>
+</dd></dl>
+
+<p class="rubric">References</p>
+<p>前田誠. (2017). T 法 (1) の考え方を利用した新しい回帰手法の提案. 品質,
+47(2), 185-194.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="mts.MSR.fit">
+<span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mts/_msr.html#MSR.fit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mts.MSR.fit" title="Permalink to this definition"></a></dt>
+<dd><p>Fit the model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>X</strong> (<em>ndarray</em><em> of </em><em>shape</em><em> (</em><em>n_samples</em><em>, </em><em>n_features</em><em>)</em>) – Training data.</p></li>
+<li><p><strong>y</strong> (<em>ndarray</em><em> of </em><em>shape</em><em> (</em><em>n_samples</em><em>, </em><em>)</em>) – Target values. Will be cast to X’s dtype if necessary.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>self</strong> – Fitted model.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mts.MSR.predict">
+<span class="sig-name descname"><span class="pre">predict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mts/_msr.html#MSR.predict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mts.MSR.predict" title="Permalink to this definition"></a></dt>
+<dd><p>Precit using fitted model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>X</strong> (<em>ndarray</em><em> of </em><em>shape</em><em> (</em><em>n_samples</em><em>, </em><em>n_features</em><em>)</em>) – Samples.</p></li>
+<li><p><strong>y</strong> (<em>None</em>) – Ignored.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>y_pred</strong> – Predicted values.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>ndarray of shape (n_samples, )</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
 <dt class="sig sig-object py" id="mts.MT">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mts.</span></span><span class="sig-name descname"><span class="pre">MT</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'mt'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ddof</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">esp</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1e-16</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kind</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'specify'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">a</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.05</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">threshold</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">4.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_sqrt</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mts/_mt.html#MT"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mts.MT" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseEstimator</span></code></p>
@@ -184,7 +309,7 @@ kind is set to f or chi2.</p></li>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="mts.MT.precision_">
 <span class="sig-name descname"><span class="pre">precision_</span></span><a class="headerlink" href="#mts.MT.precision_" title="Permalink to this definition"></a></dt>
-<dd><p>The inverse or adjoint matrix of <a href="#id1"><span class="problematic" id="id2">covariance_</span></a>.</p>
+<dd><p>The inverse or adjoint matrix of <a href="#id3"><span class="problematic" id="id4">covariance_</span></a>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
 <dd class="field-odd"><p>ndarray of shape (n_features, n_features)</p>
@@ -222,7 +347,7 @@ observations.</p>
 names that are all strings.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>ndarray of shape (<a href="#id3"><span class="problematic" id="id4">n_features_in_</span></a>, )</p>
+<dd class="field-odd"><p>ndarray of shape (<a href="#id5"><span class="problematic" id="id6">n_features_in_</span></a>, )</p>
 </dd>
 </dl>
 </dd></dl>
@@ -443,7 +568,7 @@ observations.</p>
 names that are all strings.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>ndarray of shape (<a href="#id5"><span class="problematic" id="id6">n_features_in_</span></a>, )</p>
+<dd class="field-odd"><p>ndarray of shape (<a href="#id7"><span class="problematic" id="id8">n_features_in_</span></a>, )</p>
 </dd>
 </dl>
 </dd></dl>
@@ -567,7 +692,7 @@ names that are all strings.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="mts.T">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mts.</span></span><span class="sig-name descname"><span class="pre">T</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tb</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">esp</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1e-16</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_simplified</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mts/_t.html#T"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mts.T" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseEstimator</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">RegressorMixin</span></code></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">RegressorMixin</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseEstimator</span></code></p>
 <p>T(1), T(2), Ta and Tb methods.</p>
 <p>The T(1), T(2), Ta and Tb methods are supervised learning methods used
 for regression in quality engineering. The T(1) and T(2) methods divide
@@ -652,7 +777,7 @@ simplified formula computes with <cite>b**2 / ve</cite>.</p></li>
 names that are all strings.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>ndarray of shape (<a href="#id7"><span class="problematic" id="id8">n_features_in_</span></a>, )</p>
+<dd class="field-odd"><p>ndarray of shape (<a href="#id9"><span class="problematic" id="id10">n_features_in_</span></a>, )</p>
 </dd>
 </dl>
 </dd></dl>
