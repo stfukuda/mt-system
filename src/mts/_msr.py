@@ -42,6 +42,11 @@ class MSR(BaseEstimator, RegressorMixin):
         feature_names_in_ : ndarray of shape (n_features_in_, )
             Names of features seen during fit. Defined only when X has feature
             names that are all strings.
+
+        References
+        ----------
+        前田誠. (2017). T 法 (1) の考え方を利用した新しい回帰手法の提案. 品質,
+        47(2), 185-194.
         """
         self.delta = delta
         self.esp = esp
