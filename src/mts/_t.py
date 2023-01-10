@@ -10,7 +10,7 @@ from sklearn.base import BaseEstimator, RegressorMixin
 from sklearn.utils.validation import check_is_fitted
 
 
-class T(BaseEstimator, RegressorMixin):
+class T(RegressorMixin, BaseEstimator):
     def __init__(
         self, *, tb: bool = False, esp: float = 1e-16, is_simplified: bool = False
     ):

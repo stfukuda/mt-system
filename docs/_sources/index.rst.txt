@@ -18,6 +18,7 @@ It provides the following methods ( models ) with scikit-learn compatible API:
   * T (2)
   * Ta
   * Tb
+  * MSR
 
 Using MT-system
 ===============
