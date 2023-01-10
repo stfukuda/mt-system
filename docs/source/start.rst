@@ -10,15 +10,11 @@ Dependencies
 Installation
 ------------
 
-First, save the whl file locally.
-
-Next, it can be installed as follows using pip:
+It can be installed as follows using pip:
 
 .. code-block:: shell
 
-   pip install -U XXX/XXX/mt_system-0.1.0-py3-none-any.whl
-
-'XXX/XXX' is the destination of the whl file.
+   pip install -U mt-system
 
 Usage
 -----
