@@ -1,4 +1,4 @@
-.PHONY: setup, install, update, format, lint, test, html, build, publish-test, publish, clean
+.PHONY: setup, install, update, format, lint, test, html, build, clean
 
 setup:
 	@git init
@@ -39,12 +39,6 @@ html:
 build:
 	@git checkout main
 	@poetry build
-
-publish-test:
-	@poetry publish -r test-pypi
-
-publish:
-	@poetry publish
 
 clean:
 	-@rm -rf .pytest_cache
