@@ -4,15 +4,15 @@ setup:
 	@git init
 	@git commit --allow-empty -m "Initial commit"
 	@git add .
-	@git commit -m "Add template folder"
+	@git commit -m "chore: 🤖 add template folder"
 	@poetry install --with dev,cqa,test,docs
 	@git add poetry.lock
-	@git commit -m "Add poetry.lock"
+	@git commit -m "chore: 🤖 add poetry.lock"
 	@git checkout -b develop
 	@pre-commit install
 	@pre-commit autoupdate
 	@git add .pre-commit-config.yaml
-	@git commit -m "Update hooks revision or tag"
+	@git commit -m "chore: 🤖 update pre-commit hooks revision or tag"
 
 install:
 	@poetry install --with dev,cqa,test,docs
