@@ -33,10 +33,6 @@ repos:
           - "--autofix"
         exclude: "^.devcontainer/devcontainer.json$"
       - id: trailing-whitespace
-  - repo: https://github.com/asottile/pyupgrade
-    rev: v3.3.1
-    hooks:
-      - id: pyupgrade
   - repo: https://github.com/pycqa/isort
     rev: 5.11.4
     hooks:
