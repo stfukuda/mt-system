@@ -57,6 +57,9 @@ folders = [{path="docs/source"}]
 profile = "black"
 lines_after_imports = 2
 
+[tool.black]
+target-version = ["3.8"]
+
 [tool.bandit]
 skips = ["B101", "B601"]
 
