@@ -1,8 +1,13 @@
-name: Test Results
+name: Test
 
 on:
   pull_request:
-    branches: ["main"]
+    branches:
+      - main
+      - develop
+    paths:
+      - "src/**/*.py"
+      - "test/**/*.py"
 
 permissions: {}
 

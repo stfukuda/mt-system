@@ -50,12 +50,12 @@ sphinx_rtd_theme = "*"
 [tool.poetry-dynamic-versioning]
 enable = true
 
-[tool.poetry-dynamic-versioning.substitution]
-folders = [{path="docs/source"}]
-
 [tool.isort]
 profile = "black"
 lines_after_imports = 2
+
+[tool.black]
+target-version = ["3.8"]
 
 [tool.bandit]
 skips = ["B101", "B601"]
