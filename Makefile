@@ -8,11 +8,11 @@ setup:
 	@poetry install --with dev,cqa,test,docs
 	@git add poetry.lock
 	@git commit -m "chore: 🤖 add poetry.lock"
-	@git checkout -b develop
 	@pre-commit install
 	@pre-commit autoupdate
 	@git add .pre-commit-config.yaml
 	@git commit -m "chore: 🤖 update pre-commit hooks revision or tag"
+	@git checkout -b develop
 
 install:
 	@poetry install --with dev,cqa,test,docs
