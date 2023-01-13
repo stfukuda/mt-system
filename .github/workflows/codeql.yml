@@ -1,10 +1,9 @@
-name: "CodeQL"
+name: CodeQL
 
 on:
-  pull_request:
-    branches: ["main"]
   schedule:
-    - cron: "34 8 * * 5"
+    # Run every day at midnight.
+    - cron: "0 0 * * *"
 
 jobs:
   analyze:
@@ -19,7 +18,7 @@ jobs:
       matrix:
         language: ["python"]
     steps:
-      - name: Checkout repository
+      - name: Checkout Repository
         uses: actions/checkout@v3
       - name: Setup Python 3.8
         uses: actions/setup-python@v4
