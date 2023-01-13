@@ -1,20 +1,24 @@
 {
-	"name": "Python",
-	"build": {
-		"context": "..",
-		"dockerfile": "Dockerfile",
-		"args": {
-			"VARIANT": "3.8"
-		}
-	},
+	"name": "mt-system",
+	"image": "python:3.8",
 	"workspaceFolder": "/workspace",
 	"workspaceMount": "source=${localWorkspaceFolder},target=/workspace,type=bind,consistency=cached",
+	"remoteEnv": {
+		"PATH": "/root/.local/bin:${containerEnv:PATH}",
+		"LANG": "en_US.UTF-8"
+	},
+	"runArgs": [
+		"--name",
+		"mt-system"
+	],
+	"postCreateCommand": "./.devcontainer/postCreateCommand.sh",
 	"customizations": {
 		"vscode": {
 			"extensions": [
 				"njpwerner.autodocstring",
 				"bungcip.better-toml",
 				"mhutchie.git-graph",
+				"GitHub.vscode-pull-request-github",
 				"eamodio.gitlens",
 				"oderwat.indent-rainbow",
 				"ms-python.isort",
@@ -23,7 +27,6 @@
 				"ms-toolsai.vscode-jupyter-cell-tags",
 				"ms-toolsai.jupyter-renderers",
 				"ms-toolsai.vscode-jupyter-slideshow",
-				"ms-vscode.makefile-tools",
 				"yzhang.markdown-all-in-one",
 				"DavidAnson.vscode-markdownlint",
 				"christian-kohler.path-intellisense",
@@ -45,6 +48,9 @@
 					"editor.wordWrap": "on"
 				},
 				"[python]": {
+					"editor.codeActionsOnSave": {
+						"source.organizeImports": true
+					},
 					"editor.rulers": [
 						72,
 						76,
