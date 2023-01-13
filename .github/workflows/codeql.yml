@@ -1,4 +1,4 @@
-name: "CodeQL"
+name: CodeQL
 
 on:
   pull_request:
@@ -19,7 +19,7 @@ jobs:
       matrix:
         language: ["python"]
     steps:
-      - name: Checkout repository
+      - name: Checkout Repository
         uses: actions/checkout@v3
       - name: Setup Python 3.8
         uses: actions/setup-python@v4
