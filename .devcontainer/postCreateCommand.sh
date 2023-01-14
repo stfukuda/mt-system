@@ -10,6 +10,7 @@ curl -fsSL https://deb.nodesource.com/setup_current.x | bash -
 # curl -fsSL https://deb.nodesource.com/setup_lts.x | bash -
 apt-get install nodejs
 
+npm i -g npm
 npm i -g git-cz
 
 python3 -m pip install -U pip setuptools wheel
