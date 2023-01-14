@@ -10,15 +10,9 @@ curl -fsSL https://deb.nodesource.com/setup_current.x | bash -
 # curl -fsSL https://deb.nodesource.com/setup_lts.x | bash -
 apt-get install nodejs
 
-npm i -g git-cz
+npm i -g npm git-cz
 
 python3 -m pip install -U pip setuptools wheel
 curl -sSL https://install.python-poetry.org | python3 -
 
 poetry self add "poetry-dynamic-versioning[plugin]"
-
-if [ -d .git]; then
-    make install
-else
-    make setup
-fi
