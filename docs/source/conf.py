@@ -14,7 +14,6 @@ sys.path.insert(0, os.path.abspath("../../src"))
 project = "MT-system"
 copyright = "2022, Shota Fukuda <st_fukuda@outlook.jp>"
 author = "Shota Fukuda <st_fukuda@outlook.jp>"
-version = "0.0.0"
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
