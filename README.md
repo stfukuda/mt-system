@@ -7,6 +7,7 @@ Python library of MT system.
 This library requires:
 
 - Python (>=3.8)
+- scikit-learn (>=1.1.0)
 
 ## Installation
 
