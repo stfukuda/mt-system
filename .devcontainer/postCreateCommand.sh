@@ -16,3 +16,5 @@ python3 -m pip install -U pip setuptools wheel
 curl -sSL https://install.python-poetry.org | python3 -
 
 poetry self add "poetry-dynamic-versioning[plugin]"
+
+git init
