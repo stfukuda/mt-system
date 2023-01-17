@@ -8,7 +8,7 @@ locale-gen
 
 curl -fsSL https://deb.nodesource.com/setup_current.x | bash -
 # curl -fsSL https://deb.nodesource.com/setup_lts.x | bash -
-apt-get install nodejs
+apt-get install -y nodejs
 
 npm i -g npm git-cz
 
