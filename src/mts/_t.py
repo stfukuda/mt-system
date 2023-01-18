@@ -247,3 +247,6 @@ class T(RegressorMixin, BaseEstimator):
             n[mask] = 0
 
         return n, b
+
+    def _more_tags(self):
+        return RegressorMixin._more_tags(self)
