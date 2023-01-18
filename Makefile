@@ -3,6 +3,8 @@
 setup:
 	@git init
 	@git commit --allow-empty -m "Initial commit"
+	@git checkout -b develop
+	@git checkout -b setup
 	@git add .
 	@git commit -m "chore: 🤖 add template folder"
 	@poetry install --with dev,cqa,test,docs
@@ -12,7 +14,9 @@ setup:
 	@pre-commit autoupdate
 	@git add .pre-commit-config.yaml
 	@git commit -m "chore: 🤖 update pre-commit hooks revision or tag"
-	@git checkout -b develop
+	@git checkout develop
+	@git merge setup
+	@git checkout -d setup
 
 install:
 	@poetry install --with dev,cqa,test,docs
