@@ -182,3 +182,6 @@ class MSR(RegressorMixin, BaseEstimator):
         std_X = X - self.mean_X_[None, :]
 
         return np.dot(std_X, self.coef_) + self.mean_y_
+
+    def _more_tags(self):
+        return RegressorMixin._more_tags(self)
