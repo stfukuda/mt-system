@@ -27,6 +27,7 @@
 				"ms-toolsai.jupyter-renderers",
 				"ms-toolsai.vscode-jupyter-slideshow",
 				"yzhang.markdown-all-in-one",
+				"goessner.mdmath",
 				"DavidAnson.vscode-markdownlint",
 				"christian-kohler.path-intellisense",
 				"ms-python.vscode-pylance",
@@ -77,6 +78,7 @@
 				"isort.path": [
 					"/usr/local/bin/isort"
 				],
+				"markdown.math.enabled": false,
 				"python.analysis.completeFunctionParens": true,
 				"python.analysis.extraPaths": [
 					"/usr/local/lib/python3.8/site-packages/",
