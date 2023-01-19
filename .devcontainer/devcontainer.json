@@ -72,6 +72,7 @@
 				"editor.formatOnType": true,
 				"editor.renderWhitespace": "all",
 				"explorer.confirmDragAndDrop": false,
+				"extensions.autoUpdate": false,
 				"files.autoSave": "afterDelay",
 				"files.trimTrailingWhitespace": true,
 				"git.enableCommitSigning": true,
