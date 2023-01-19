@@ -15,13 +15,13 @@
 	"customizations": {
 		"vscode": {
 			"extensions": [
+				"MS-CEINTL.vscode-language-pack-ja",
 				"njpwerner.autodocstring",
 				"bungcip.better-toml",
 				"mhutchie.git-graph",
 				"eamodio.gitlens",
 				"oderwat.indent-rainbow",
 				"ms-python.isort",
-				"MS-CEINTL.vscode-language-pack-ja",
 				"ms-toolsai.jupyter",
 				"ms-toolsai.vscode-jupyter-cell-tags",
 				"ms-toolsai.jupyter-renderers",
