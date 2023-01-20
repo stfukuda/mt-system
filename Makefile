@@ -35,7 +35,7 @@ lint:
 	-@bandit -r ./src ./tests
 
 test:
-	@pytest --cov=src --cov-report=term-missing --cov-report=html
+	@pytest --cov=src --cov-report=term-missing --cov-report=html -n 4
 
 html:
 	@sphinx-build -b html ./docs/source ./docs
