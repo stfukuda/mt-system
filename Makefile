@@ -7,7 +7,7 @@ setup:
 	@git checkout -b setup
 	@git add .
 	@git commit -m "chore: 🤖 add template folder"
-	@poetry install --with dev,cqa,test,docs
+	@poetry install --with test,docs
 	@git add poetry.lock
 	@git commit -m "chore: 🤖 add poetry.lock"
 	@pre-commit install
@@ -19,7 +19,7 @@ setup:
 	@git checkout -d setup
 
 install:
-	@poetry install --with dev,cqa,test,docs
+	@poetry install --with test,docs
 	@pre-commit install
 
 update:

@@ -17,16 +17,7 @@ include = ["README.md"]
 python = "^3.8"
 scikit-learn = "*"
 
-[tool.poetry.group.dev]
-optional = true
-
 [tool.poetry.group.dev.dependencies]
-pandas = "*"
-
-[tool.poetry.group.cqa]
-optional = true
-
-[tool.poetry.group.cqa.dependencies]
 isort = "*"
 black = "*"
 flake8 = "*"
@@ -39,6 +30,8 @@ optional = true
 [tool.poetry.group.test.dependencies]
 pytest = "*"
 pytest-cov = "*"
+pytest-xdis = "*"
+pandas = "*"
 
 [tool.poetry.group.docs]
 optional = true
