@@ -24,11 +24,17 @@ flake8 = "*"
 bandit = {extras = ["toml"], version = "*"}
 pre-commit = "*"
 
+[tool.poetry.group.test]
+optional = true
+
 [tool.poetry.group.test.dependencies]
 pytest = "*"
 pytest-cov = "*"
 pytest-xdis = "*"
 pandas = "*"
+
+[tool.poetry.group.docs]
+optional = true
 
 [tool.poetry.group.docs.dependencies]
 sphinx = "*"
