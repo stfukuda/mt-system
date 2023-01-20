@@ -18,7 +18,6 @@ python = "^3.8"
 scikit-learn = "*"
 
 [tool.poetry.group.dev.dependencies]
-pandas = "*"
 
 [tool.poetry.group.cqa.dependencies]
 isort = "*"
@@ -31,6 +30,7 @@ pre-commit = "*"
 pytest = "*"
 pytest-cov = "*"
 pytest-xdis = "*"
+pandas = "*"
 
 [tool.poetry.group.docs.dependencies]
 sphinx = "*"
