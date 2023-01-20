@@ -30,6 +30,7 @@ pre-commit = "*"
 [tool.poetry.group.test.dependencies]
 pytest = "*"
 pytest-cov = "*"
+pytest-xdis = "*"
 
 [tool.poetry.group.docs.dependencies]
 sphinx = "*"
