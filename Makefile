@@ -35,7 +35,7 @@ lint:
 	-@bandit -r ./src ./tests
 
 test:
-	@pytest --cov=src --cov-report=term-missing --cov-report=html
+	@pytest --cov=src --cov-report=term-missing --cov-report=html -n 4
 
 html:
 	@sphinx-build -b html ./docs/source ./docs
@@ -48,5 +48,6 @@ clean:
 	-@rm -rf .pytest_cache
 	-@rm -rf dist
 	-@rm -rf htmlcov
-	-@find ./ -name "__pycache__" -exec rm -rf {} \;
+	-@rm -rf ./src/__pycache__
+	-@rm -rf ./tests/__pycache__
 	-@rm -rf .coverage
