@@ -30,7 +30,7 @@ optional = true
 [tool.poetry.group.test.dependencies]
 pytest = "*"
 pytest-cov = "*"
-pytest-xdis = "*"
+pytest-xdist = "*"
 pandas = "*"
 
 [tool.poetry.group.docs]
