@@ -199,14 +199,7 @@ class T(RegressorMixin, BaseEstimator):
             M_true = y - self.mean_y_
             M_pred = self.predict(X) - self.mean_y_
 
-        r = np.sum(M_true**2)
-        L = np.dot(M_true, M_pred)
-        st = np.sum(M_pred**2, axis=0)
-        sb = (L**2) / (r + self.esp)
-        se = st - sb
-        ve = se / (M_true.shape[0] - 1)
-
-        n = (1 / r * (sb - ve)) / (ve + self.esp)
+        n, _ = self._compute_sn_ratio_and_sensitivity(M_pred[:, None], M_true)
         n = 10 * np.log10(n)
 
         return n
