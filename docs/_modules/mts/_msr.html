@@ -28,9 +28,6 @@
         <div class="wy-side-nav-search" >
             <a href="../../index.html" class="icon icon-home"> MT-system
           </a>
-              <div class="version">
-                0.0.0
-              </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" />
@@ -70,7 +67,7 @@
 
   <h1>Source code for mts._msr</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">MSR method module.</span>
+<span class="sd">MSR Method Module.</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="c1"># Authors: Shota Fukuda &lt;st_fukuda@outlook.jp&gt;</span>
@@ -85,16 +82,16 @@
 <div class="viewcode-block" id="MSR"><a class="viewcode-back" href="../../mts.html#mts.MSR">[docs]</a><span class="k">class</span> <span class="nc">MSR</span><span class="p">(</span><span class="n">RegressorMixin</span><span class="p">,</span> <span class="n">BaseEstimator</span><span class="p">):</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">delta</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1e-4</span><span class="p">,</span> <span class="n">esp</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1e-16</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        MSR: Multiple Simple Regression.</span>
+<span class="sd">        MSR: Multiple Single Regression.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        delta : float, default=1e-4</span>
-<span class="sd">            Threshold for stopping repeated comuputes.</span>
+<span class="sd">            Threshold for stopping repeated computations.</span>
 
 <span class="sd">        esp : float, default=1e-16</span>
-<span class="sd">            A constant to prevent zero division. In the calculation, it is used</span>
-<span class="sd">            as `1 / (x + esp)`.</span>
+<span class="sd">            A constant to avoid zero division. It is used in the calculation as</span>
+<span class="sd">            `1 / (x + esp)`.</span>
 
 <span class="sd">        Attributes</span>
 <span class="sd">        ----------</span>
@@ -102,7 +99,7 @@
 <span class="sd">            Mean values of each feature of the training data.</span>
 
 <span class="sd">        mean_y_ : float</span>
-<span class="sd">            Mean value of true values for `X`.</span>
+<span class="sd">            Mean value of target values.</span>
 
 <span class="sd">        coef_ : ndarray of shape (n_features, )</span>
 <span class="sd">            Estimated coefficients for the MSR.</span>
@@ -111,13 +108,13 @@
 <span class="sd">            Number of features seen during fit.</span>
 
 <span class="sd">        feature_names_in_ : ndarray of shape (n_features_in_, )</span>
-<span class="sd">            Names of features seen during fit. Defined only when X has feature</span>
+<span class="sd">            Names of features seen during the fit. Defined only if X has feature</span>
 <span class="sd">            names that are all strings.</span>
 
 <span class="sd">        References</span>
 <span class="sd">        ----------</span>
-<span class="sd">        前田誠. (2017). T 法 (1) の考え方を利用した新しい回帰手法の提案. 品質,</span>
-<span class="sd">        47(2), 185-194.</span>
+<span class="sd">        前田誠. (2017). T 法 (1) の考え方を利用した新しい回帰手法の提案. 品質, 47(2),</span>
+<span class="sd">        185-194.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">delta</span> <span class="o">=</span> <span class="n">delta</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">esp</span> <span class="o">=</span> <span class="n">esp</span>
@@ -231,7 +228,7 @@
 
 <div class="viewcode-block" id="MSR.predict"><a class="viewcode-back" href="../../mts.html#mts.MSR.predict">[docs]</a>    <span class="k">def</span> <span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Precit using fitted model.</span>
+<span class="sd">        Predict using the fitted model.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -252,7 +249,10 @@
 
         <span class="n">std_X</span> <span class="o">=</span> <span class="n">X</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">mean_X_</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="p">:]</span>
 
-        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">std_X</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">coef_</span><span class="p">)</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">mean_y_</span></div></div>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">std_X</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">coef_</span><span class="p">)</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">mean_y_</span></div>
+
+    <span class="k">def</span> <span class="nf">_more_tags</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">RegressorMixin</span><span class="o">.</span><span class="n">_more_tags</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
 </pre></div>
 
            </div>

@@ -30,9 +30,6 @@
         <div class="wy-side-nav-search" >
             <a href="index.html" class="icon icon-home"> MT-system
           </a>
-              <div class="version">
-                0.0.0
-              </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" />
@@ -133,13 +130,13 @@
 <dt class="sig sig-object py" id="mts.MSR">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mts.</span></span><span class="sig-name descname"><span class="pre">MSR</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delta</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.0001</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">esp</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1e-16</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mts/_msr.html#MSR"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mts.MSR" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">RegressorMixin</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseEstimator</span></code></p>
-<p>MSR: Multiple Simple Regression.</p>
+<p>MSR: Multiple Single Regression.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>delta</strong> (<em>float</em><em>, </em><em>default=1e-4</em>) – Threshold for stopping repeated comuputes.</p></li>
-<li><p><strong>esp</strong> (<em>float</em><em>, </em><em>default=1e-16</em>) – A constant to prevent zero division. In the calculation, it is used
-as <cite>1 / (x + esp)</cite>.</p></li>
+<li><p><strong>delta</strong> (<em>float</em><em>, </em><em>default=1e-4</em>) – Threshold for stopping repeated computations.</p></li>
+<li><p><strong>esp</strong> (<em>float</em><em>, </em><em>default=1e-16</em>) – A constant to avoid zero division. It is used in the calculation as
+<cite>1 / (x + esp)</cite>.</p></li>
 </ul>
 </dd>
 </dl>
@@ -157,7 +154,7 @@ as <cite>1 / (x + esp)</cite>.</p></li>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="mts.MSR.mean_y_">
 <span class="sig-name descname"><span class="pre">mean_y_</span></span><a class="headerlink" href="#mts.MSR.mean_y_" title="Permalink to this definition"></a></dt>
-<dd><p>Mean value of true values for <cite>X</cite>.</p>
+<dd><p>Mean value of target values.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
 <dd class="field-odd"><p>float</p>
@@ -190,7 +187,7 @@ as <cite>1 / (x + esp)</cite>.</p></li>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="mts.MSR.feature_names_in_">
 <span class="sig-name descname"><span class="pre">feature_names_in_</span></span><a class="headerlink" href="#mts.MSR.feature_names_in_" title="Permalink to this definition"></a></dt>
-<dd><p>Names of features seen during fit. Defined only when X has feature
+<dd><p>Names of features seen during the fit. Defined only if X has feature
 names that are all strings.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
@@ -200,8 +197,8 @@ names that are all strings.</p>
 </dd></dl>
 
 <p class="rubric">References</p>
-<p>前田誠. (2017). T 法 (1) の考え方を利用した新しい回帰手法の提案. 品質,
-47(2), 185-194.</p>
+<p>前田誠. (2017). T 法 (1) の考え方を利用した新しい回帰手法の提案. 品質, 47(2),
+185-194.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="mts.MSR.fit">
 <span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mts/_msr.html#MSR.fit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mts.MSR.fit" title="Permalink to this definition"></a></dt>
@@ -225,7 +222,7 @@ names that are all strings.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="mts.MSR.predict">
 <span class="sig-name descname"><span class="pre">predict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mts/_msr.html#MSR.predict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mts.MSR.predict" title="Permalink to this definition"></a></dt>
-<dd><p>Precit using fitted model.</p>
+<dd><p>Predict using the fitted model.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -251,8 +248,8 @@ names that are all strings.</p>
 <p>MT, MTA and Standardized-Variation-Pressure methods.</p>
 <p>The MT, MTA and SVP methods are unsupervised learning methods used for
 pattern recognition in quality engineering. These methods learn the mean
-and standard deviation of each feature and the correlation matrix
-inverse of the training data, and compute MD values based on these
+and standard deviation of each feature and the inverse correlation
+matrix of the training data, and compute MD values based on these
 values. The training data is called the unit space and usually contains
 only normal data. The MTA method learns an adjoint matrix instead of an
 inverse matrix to deal with multicolinearity. The SVP method does not
@@ -261,14 +258,14 @@ require a correlation matrix.</p>
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>method</strong> (<em>{&quot;mt&quot;</em><em>, </em><em>&quot;mta&quot;</em><em>, </em><em>&quot;svp&quot;}</em><em>, </em><em>default=&quot;mt&quot;</em>) – Computation method.</p></li>
-<li><p><strong>ddof</strong> (<em>int</em><em>, </em><em>default=1</em>) – It means the delta degree of freedom. The divisor used in the
-calculation is <cite>N - ddof</cite>, where <cite>N</cite> is the number of samples.</p></li>
-<li><p><strong>esp</strong> (<em>float</em><em>, </em><em>default=1e-16</em>) – A constant to prevent zero division. In the calculation, it is used
-as <cite>1 / (x + esp)</cite>.</p></li>
+<li><p><strong>ddof</strong> (<em>int</em><em>, </em><em>default=1</em>) – It means the delta degrees of freedom. The divisor used in the is
+<cite>N - ddof</cite>, where <cite>N</cite> is the number of samples.</p></li>
+<li><p><strong>esp</strong> (<em>float</em><em>, </em><em>default=1e-16</em>) – A constant to avoid zero division. It is used in the calculation as
+<cite>1 / (x + esp)</cite>.</p></li>
 <li><p><strong>kind</strong> (<em>{&quot;p&quot;</em><em>, </em><em>&quot;f&quot;</em><em>, </em><em>&quot;chi2&quot;</em><em>, </em><em>&quot;specify&quot;}</em><em>, </em><em>default=&quot;specify&quot;</em>) – The distribution used to determine normal and abnormal thresholds.</p></li>
-<li><p><strong>a</strong> (<em>float</em><em>, </em><em>default=0.05</em>) – Right side significance level. Use to determine the threshold, if
-kind is set to f or chi2.</p></li>
-<li><p><strong>threshold</strong> (<em>float</em><em>, </em><em>default=4.0</em>) – Threshold to use if kind is set to specify.</p></li>
+<li><p><strong>a</strong> (<em>float</em><em>, </em><em>default=0.05</em>) – Right side significance level. Use to set the threshold when type is
+set to <cite>f</cite> or <cite>chi2</cite>.</p></li>
+<li><p><strong>threshold</strong> (<em>float</em><em>, </em><em>default=4.0</em>) – Threshold to use when <cite>kind</cite> is set to <cite>specify</cite>.</p></li>
 <li><p><strong>return_sqrt</strong> (<em>bool</em><em>, </em><em>default=False</em>) – Return the square root of the MD value or not.</p></li>
 </ul>
 </dd>
@@ -276,7 +273,7 @@ kind is set to f or chi2.</p></li>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="mts.MT.mean_">
 <span class="sig-name descname"><span class="pre">mean_</span></span><a class="headerlink" href="#mts.MT.mean_" title="Permalink to this definition"></a></dt>
-<dd><p>Mean values of each feature of the training data.</p>
+<dd><p>Means of each feature of the training data.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
 <dd class="field-odd"><p>ndarray of shape (n_features, )</p>
@@ -320,8 +317,8 @@ kind is set to f or chi2.</p></li>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="mts.MT.dist_">
 <span class="sig-name descname"><span class="pre">dist_</span></span><a class="headerlink" href="#mts.MT.dist_" title="Permalink to this definition"></a></dt>
-<dd><p>Mahalanobis distances of the training set (on which fit is called)
-observations.</p>
+<dd><p>Mahalanobis distances of the training set (on which the fit is
+called) observations.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
 <dd class="field-odd"><p>ndarray of shape(n_samples, )</p>
@@ -343,7 +340,7 @@ observations.</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="mts.MT.feature_names_in_">
 <span class="sig-name descname"><span class="pre">feature_names_in_</span></span><a class="headerlink" href="#mts.MT.feature_names_in_" title="Permalink to this definition"></a></dt>
-<dd><p>Names of features seen during fit. Defined only when X has feature
+<dd><p>Names of features seen during the fit. Defined only if X has feature
 names that are all strings.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
@@ -375,7 +372,7 @@ names that are all strings.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="mts.MT.fit_predict">
 <span class="sig-name descname"><span class="pre">fit_predict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mts/_mt.html#MT.fit_predict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mts.MT.fit_predict" title="Permalink to this definition"></a></dt>
-<dd><p>Perform fit on X and returns labels for X.</p>
+<dd><p>Perform Fit to X and Return Labels for X.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -395,7 +392,7 @@ names that are all strings.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="mts.MT.mahalanobis">
 <span class="sig-name descname"><span class="pre">mahalanobis</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mts/_mt.html#MT.mahalanobis"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mts.MT.mahalanobis" title="Permalink to this definition"></a></dt>
-<dd><p>Compute the mahalanobis distances (MD values).</p>
+<dd><p>Compute the Mahalanobis distances (MD values).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>X</strong> (<em>ndarray</em><em> of </em><em>shape</em><em> (</em><em>n_samples</em><em>, </em><em>n_features</em><em>)</em>) – Samples.</p>
@@ -412,7 +409,7 @@ names that are all strings.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="mts.MT.predict">
 <span class="sig-name descname"><span class="pre">predict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mts/_mt.html#MT.predict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mts.MT.predict" title="Permalink to this definition"></a></dt>
-<dd><p>Predict labels of X according to fitted model.</p>
+<dd><p>Predict the labels of X according to the fitted model.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -432,7 +429,7 @@ names that are all strings.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="mts.MT.score">
 <span class="sig-name descname"><span class="pre">score</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mts/_mt.html#MT.score"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mts.MT.score" title="Permalink to this definition"></a></dt>
-<dd><p>Return the ROCAUC on the given test data and labels.</p>
+<dd><p>Return the ROCAUC to the given test data and labels.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -452,7 +449,7 @@ names that are all strings.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="mts.MT.score_samples">
 <span class="sig-name descname"><span class="pre">score_samples</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mts/_mt.html#MT.score_samples"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mts.MT.score_samples" title="Permalink to this definition"></a></dt>
-<dd><p>Compute the mahalanobis distandes (MD values).</p>
+<dd><p>Compute the Mahalanobis distances (MD values).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>X</strong> (<em>ndarray</em><em> of </em><em>shape</em><em> (</em><em>n_samples</em><em>, </em><em>n_features</em><em>)</em>) – Samples.</p>
@@ -474,19 +471,19 @@ names that are all strings.</p>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseEstimator</span></code></p>
 <p>RT method.</p>
 <p>The RT method is an unsupervised learning method used for pattern
-recognition in quality engineering. The method learns the mean value of
-each feature in the unit space, the sensitivity and SN ratio of each
-sample, and the associated covariance matrix of the sensitivity and SN
-ratio, and compute MD values based on these values.</p>
+recognition in quality engineering. The method learns the mean of each
+feature in unit space, the sensitivity and SN ratio of each sample, and
+the associated covariance matrix of the sensitivity and SN ratio, and
+computes MD values based on these values.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>ddof</strong> (<em>int</em><em>, </em><em>default=1</em>) – It means the delta degree of freedom. The divisor used in the
-calculation is <cite>N - ddof</cite>, where <cite>N</cite> is the number of samples.</p></li>
-<li><p><strong>esp</strong> (<em>float</em><em>, </em><em>default=1e-16</em>) – A constant to prevent zero division. In the calculation, it is used
-as <cite>1 / (x + esp)</cite>.</p></li>
+<li><p><strong>ddof</strong> (<em>int</em><em>, </em><em>default=1</em>) – It means the delta degrees of freedom. The divisor used in the is
+<cite>N - ddof</cite>, where <cite>N</cite> is the number of samples.</p></li>
+<li><p><strong>esp</strong> (<em>float</em><em>, </em><em>default=1e-16</em>) – A constant to avoid zero division. It is used in the calculation as
+<cite>1 / (x + esp)</cite>.</p></li>
 <li><p><strong>threshold</strong> (<em>float</em><em>, </em><em>default=4.0</em>) – Threshold. A multiple of the standard deviation of the MD values in
-the unit space. IF 4, threshold is 4 sigma.</p></li>
+the unit space. If 4, threshold is 4 sigma.</p></li>
 <li><p><strong>return_sqrt</strong> (<em>bool</em><em>, </em><em>default=False</em>) – Return the square root of the MD values or not.</p></li>
 </ul>
 </dd>
@@ -494,7 +491,7 @@ the unit space. IF 4, threshold is 4 sigma.</p></li>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="mts.RT.mean_X_">
 <span class="sig-name descname"><span class="pre">mean_X_</span></span><a class="headerlink" href="#mts.RT.mean_X_" title="Permalink to this definition"></a></dt>
-<dd><p>Mean values of training data’s each feature.</p>
+<dd><p>Mean values of each feature of the training data.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
 <dd class="field-odd"><p>ndarray of shape (n_features, )</p>
@@ -505,9 +502,9 @@ the unit space. IF 4, threshold is 4 sigma.</p></li>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="mts.RT.mean_Y_">
 <span class="sig-name descname"><span class="pre">mean_Y_</span></span><a class="headerlink" href="#mts.RT.mean_Y_" title="Permalink to this definition"></a></dt>
-<dd><p>Mean values of sensitivity and error variance reciprocal.
-<cite>mean_Y_[0]</cite> is sensitivity mean value, and <cite>mean_Y_[1]</cite> is error
-variance reciprocal.</p>
+<dd><p>Means of sensitivity and error variance reciprocals. Mean_Y_[0]` is
+the sensitivity mean, and Mean_Y_[1]` is the error variance
+reciprocal.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
 <dd class="field-odd"><p>ndarray of shape (2, )</p>
@@ -541,8 +538,8 @@ reciprocal.</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="mts.RT.dist_">
 <span class="sig-name descname"><span class="pre">dist_</span></span><a class="headerlink" href="#mts.RT.dist_" title="Permalink to this definition"></a></dt>
-<dd><p>Mahalanobis distances of the training set (on which fit is called)
-observations.</p>
+<dd><p>Mahalanobis distances of the training set (on which the fit is
+called) observations.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
 <dd class="field-odd"><p>ndarray of shape(n_samples, )</p>
@@ -564,7 +561,7 @@ observations.</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="mts.RT.feature_names_in_">
 <span class="sig-name descname"><span class="pre">feature_names_in_</span></span><a class="headerlink" href="#mts.RT.feature_names_in_" title="Permalink to this definition"></a></dt>
-<dd><p>Names of features seen during fit. Defined only when X has feature
+<dd><p>Names of features seen during the fit. Defined only if X has feature
 names that are all strings.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
@@ -596,7 +593,7 @@ names that are all strings.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="mts.RT.fit_predict">
 <span class="sig-name descname"><span class="pre">fit_predict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mts/_rt.html#RT.fit_predict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mts.RT.fit_predict" title="Permalink to this definition"></a></dt>
-<dd><p>Perform fit on X and returns labels for X.</p>
+<dd><p>Perform Fit to X and Return Labels for X.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -616,7 +613,7 @@ names that are all strings.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="mts.RT.mahalanobis">
 <span class="sig-name descname"><span class="pre">mahalanobis</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mts/_rt.html#RT.mahalanobis"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mts.RT.mahalanobis" title="Permalink to this definition"></a></dt>
-<dd><p>Compute the mahalanobis distances (MD values).</p>
+<dd><p>Compute the Mahalanobis distances (MD values).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>X</strong> (<em>ndarray</em><em> of </em><em>shape</em><em> (</em><em>n_samples</em><em>, </em><em>n_features</em><em>)</em>) – Samples.</p>
@@ -633,7 +630,7 @@ names that are all strings.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="mts.RT.predict">
 <span class="sig-name descname"><span class="pre">predict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mts/_rt.html#RT.predict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mts.RT.predict" title="Permalink to this definition"></a></dt>
-<dd><p>Predict labels of X according to fitted model.</p>
+<dd><p>Predict the labels of X according to the fitted model.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -653,7 +650,7 @@ names that are all strings.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="mts.RT.score">
 <span class="sig-name descname"><span class="pre">score</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mts/_rt.html#RT.score"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mts.RT.score" title="Permalink to this definition"></a></dt>
-<dd><p>Return the ROCAUC on the given test data and labels.</p>
+<dd><p>Return the ROCAUC to the given test data and labels.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -673,7 +670,7 @@ names that are all strings.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="mts.RT.score_samples">
 <span class="sig-name descname"><span class="pre">score_samples</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mts/_rt.html#RT.score_samples"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mts.RT.score_samples" title="Permalink to this definition"></a></dt>
-<dd><p>Compute the mahalanobis distandes (MD values).</p>
+<dd><p>Compute the Mahalanobis distances (MD values).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>X</strong> (<em>ndarray</em><em> of </em><em>shape</em><em> (</em><em>n_samples</em><em>, </em><em>n_features</em><em>)</em>) – Samples.</p>
@@ -697,20 +694,20 @@ names that are all strings.</p>
 <p>The T(1), T(2), Ta and Tb methods are supervised learning methods used
 for regression in quality engineering. The T(1) and T(2) methods divide
 the training data into unit space and signal data, and learn the mean
-value from the unit space and the sensitivity and SN ratio from the
-signal data. The Ta method does not divide the training data into unit
-space and signal data, and learns the mean value, sensitivity, and SN
-ratio from the all training data. The Tb method also learns from all
-training data, but for each item, the sample with the largest SN ratio
-is used as the mean value.</p>
+from the unit space and the sensitivity and SN ratio from the signal
+data. The Ta method does not divide the training data into unit space
+and signal data, and learns the mean, sensitivity, and SN ratio from all
+the training data. The Tb method also learns from all training data, but
+for each element, the sample with the largest SN ratio is used as the
+mean.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>tb</strong> (<em>bool</em><em>, </em><em>default=False</em>) – Whether to computes as Tb method. If False, compute as T(1), T(s)
+<li><p><strong>tb</strong> (<em>bool</em><em>, </em><em>default=False</em>) – Whether to compute as Tb method. If False, compute as T(1), T(2),
 and Ta methods.</p></li>
-<li><p><strong>esp</strong> (<em>float</em><em>, </em><em>default=1e-16</em>) – A constant to prevent zero division. In the calculation, it is used
-as <cite>1 / (x + esp)</cite>.</p></li>
-<li><p><strong>is_simplified</strong> (<em>bool</em><em>, </em><em>default=False</em>) – Compute the SN ratio with the simplified formula or not. The
+<li><p><strong>esp</strong> (<em>float</em><em>, </em><em>default=1e-16</em>) – A constant to avoid zero division. It is used in the calculation as
+<cite>1 / (x + esp)</cite>.</p></li>
+<li><p><strong>is_simplified</strong> (<em>bool</em><em>, </em><em>default=False</em>) – Compute the SN ratio using the simplified formula or not. The
 simplified formula computes with <cite>b**2 / ve</cite>.</p></li>
 </ul>
 </dd>
@@ -718,7 +715,7 @@ simplified formula computes with <cite>b**2 / ve</cite>.</p></li>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="mts.T.mean_X_">
 <span class="sig-name descname"><span class="pre">mean_X_</span></span><a class="headerlink" href="#mts.T.mean_X_" title="Permalink to this definition"></a></dt>
-<dd><p>Mean values of training data’s each feature.</p>
+<dd><p>Mean values of each feature of the training data.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
 <dd class="field-odd"><p>ndarray of shape (n_features, )</p>
@@ -773,7 +770,7 @@ simplified formula computes with <cite>b**2 / ve</cite>.</p></li>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="mts.T.feature_names_in_">
 <span class="sig-name descname"><span class="pre">feature_names_in_</span></span><a class="headerlink" href="#mts.T.feature_names_in_" title="Permalink to this definition"></a></dt>
-<dd><p>Names of features seen during fit. Defined only when X has feature
+<dd><p>Names of features seen during the fit. Defined only if X has feature
 names that are all strings.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
@@ -794,8 +791,8 @@ names that are all strings.</p>
 <li><p><strong>us_idx</strong> (<em>array_like</em><em> of </em><em>shape</em><em> (</em><em>n_samples</em><em>, </em><em>) or </em><em>None</em><em>, </em><em>default=None.</em>) – A binary array indicating which sample of the training data is the
 unit space (0 for the unit space, 1 for the signal data); if None,
 the training data is not divided into the unit space and the signal
-data, but is computed as the Ta method. It is ignored when computing
-as the Tb method.</p></li>
+data, but is computed as the Ta method. It is ignored when the Tb
+method is computed.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -810,7 +807,7 @@ as the Tb method.</p></li>
 <dl class="py method">
 <dt class="sig sig-object py" id="mts.T.predict">
 <span class="sig-name descname"><span class="pre">predict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mts/_t.html#T.predict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mts.T.predict" title="Permalink to this definition"></a></dt>
-<dd><p>Precit using fitted model.</p>
+<dd><p>Predict using the fitted model.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -830,7 +827,7 @@ as the Tb method.</p></li>
 <dl class="py method">
 <dt class="sig sig-object py" id="mts.T.score">
 <span class="sig-name descname"><span class="pre">score</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mts/_t.html#T.score"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mts.T.score" title="Permalink to this definition"></a></dt>
-<dd><p>Return the SN ratio of overall estimate.</p>
+<dd><p>Return the SN ratio of the integrated estimate.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -839,9 +836,9 @@ as the Tb method.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><strong>n</strong> – SN ratio of overall estimation. For the T(1), T(2), and Ta methods,
-it is computed from M_True and M_Pred, and for the Tb method, it is
-computed from y_True and y_Pred.</p>
+<dd class="field-even"><p><strong>n</strong> – SN ratio of the integrated estimate. It is computed from M_True and
+M_Pred for the T(1), T(2) and Ta methods, and from y_True and y_Pred
+for the Tb method.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p>float</p>
