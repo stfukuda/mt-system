@@ -1,5 +1,5 @@
 """
-MT, MTA and Standardized-Variation-Pressure methods module.
+MT, MTA and Standardized Variation Pressure Methods Module.
 """
 
 # Authors: Shota Fukuda <st_fukuda@outlook.jp>
@@ -30,8 +30,8 @@ class MT(BaseEstimator):
 
         The MT, MTA and SVP methods are unsupervised learning methods used for
         pattern recognition in quality engineering. These methods learn the mean
-        and standard deviation of each feature and the correlation matrix
-        inverse of the training data, and compute MD values based on these
+        and standard deviation of each feature and the inverse correlation
+        matrix of the training data, and compute MD values based on these
         values. The training data is called the unit space and usually contains
         only normal data. The MTA method learns an adjoint matrix instead of an
         inverse matrix to deal with multicolinearity. The SVP method does not
@@ -43,22 +43,22 @@ class MT(BaseEstimator):
             Computation method.
 
         ddof : int, default=1
-            It means the delta degree of freedom. The divisor used in the
-            calculation is `N - ddof`, where `N` is the number of samples.
+            It means the delta degrees of freedom. The divisor used in the is
+            `N - ddof`, where `N` is the number of samples.
 
         esp : float, default=1e-16
-            A constant to prevent zero division. In the calculation, it is used
-            as `1 / (x + esp)`.
+            A constant to avoid zero division. It is used in the calculation as
+            `1 / (x + esp)`.
 
         kind : {"p", "f", "chi2", "specify"}, default="specify"
             The distribution used to determine normal and abnormal thresholds.
 
         a : float, default=0.05
-            Right side significance level. Use to determine the threshold, if
-            kind is set to f or chi2.
+            Right side significance level. Use to set the threshold when type is
+            set to `f` or `chi2`.
 
         threshold : float, default=4.0
-            Threshold to use if kind is set to specify.
+            Threshold to use when `kind` is set to `specify`.
 
         return_sqrt : bool, default=False
             Return the square root of the MD value or not.
@@ -66,7 +66,7 @@ class MT(BaseEstimator):
         Attributes
         ----------
         mean_ : ndarray of shape (n_features, )
-            Mean values of each feature of the training data.
+            Means of each feature of the training data.
 
         scale_ : ndarray of shape (n_features, )
             Standard deviation values of each feature of the training data.
@@ -78,14 +78,14 @@ class MT(BaseEstimator):
             The inverse or adjoint matrix of covariance_.
 
         dist_ : ndarray of shape(n_samples, )
-            Mahalanobis distances of the training set (on which fit is called)
-            observations.
+            Mahalanobis distances of the training set (on which the fit is
+            called) observations.
 
         n_features_in_ : int
             Number of features seen during fit.
 
         feature_names_in_ : ndarray of shape (n_features_in_, )
-            Names of features seen during fit. Defined only when X has feature
+            Names of features seen during the fit. Defined only if X has feature
             names that are all strings.
         """
         self.method = method
@@ -148,7 +148,7 @@ class MT(BaseEstimator):
 
     def predict(self, X, y=None):
         """
-        Predict labels of X according to fitted model.
+        Predict the labels of X according to the fitted model.
 
         Parameters
         ----------
@@ -169,7 +169,7 @@ class MT(BaseEstimator):
 
     def fit_predict(self, X, y=None):
         """
-        Perform fit on X and returns labels for X.
+        Perform Fit to X and Return Labels for X.
 
         Parameters
         ----------
@@ -188,7 +188,7 @@ class MT(BaseEstimator):
 
     def mahalanobis(self, X):
         """
-        Compute the mahalanobis distances (MD values).
+        Compute the Mahalanobis distances (MD values).
 
         Parameters
         ----------
@@ -210,7 +210,7 @@ class MT(BaseEstimator):
 
     def score(self, X, y):
         """
-        Return the ROCAUC on the given test data and labels.
+        Return the ROCAUC to the given test data and labels.
 
         Parameters
         ----------
@@ -233,7 +233,7 @@ class MT(BaseEstimator):
 
     def score_samples(self, X):
         """
-        Compute the mahalanobis distandes (MD values).
+        Compute the Mahalanobis distances (MD values).
 
         Parameters
         ----------
@@ -259,10 +259,10 @@ class MT(BaseEstimator):
             Covariance matrix.
 
         i : int
-            Cofactor row number. Start of 0.
+            Cofactor row number. Start from 0.
 
         j : int
-            Cofactor column number. Start of 0.
+            Cofactor column number. Start from 0.
 
         Returns
         -------
@@ -286,7 +286,7 @@ class MT(BaseEstimator):
         Returns
         -------
         precision : ndarray of shape (n_features, n_features)
-            The inverse or adjoint matrix of covariance.
+            The inverse or adjoint matrix of the covariance matrix.
         """
         if self.method == "mt":
             precision = pinvh(covariance, check_finite=False)
@@ -308,7 +308,7 @@ class MT(BaseEstimator):
 
     def _mahalanobis(self, X, mean, scale, precision):
         """
-        Compute mahalanobis distances (MD values).
+        Compute Mahalanobis distances (MD values).
 
         Parameters
         ----------

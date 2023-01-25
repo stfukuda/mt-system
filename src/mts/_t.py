@@ -1,5 +1,5 @@
 """
-T(1), T(2), Ta and Tb methods module.
+T(1), T(2), Ta and Tb Methods Module.
 """
 
 # Authors: Shota Fukuda <st_fukuda@outlook.jp>
@@ -20,31 +20,31 @@ class T(RegressorMixin, BaseEstimator):
         The T(1), T(2), Ta and Tb methods are supervised learning methods used
         for regression in quality engineering. The T(1) and T(2) methods divide
         the training data into unit space and signal data, and learn the mean
-        value from the unit space and the sensitivity and SN ratio from the
-        signal data. The Ta method does not divide the training data into unit
-        space and signal data, and learns the mean value, sensitivity, and SN
-        ratio from the all training data. The Tb method also learns from all
-        training data, but for each item, the sample with the largest SN ratio
-        is used as the mean value.
+        from the unit space and the sensitivity and SN ratio from the signal
+        data. The Ta method does not divide the training data into unit space
+        and signal data, and learns the mean, sensitivity, and SN ratio from all
+        the training data. The Tb method also learns from all training data, but
+        for each element, the sample with the largest SN ratio is used as the
+        mean.
 
         Parameters
         ----------
         tb : bool, default=False
-            Whether to computes as Tb method. If False, compute as T(1), T(s)
+            Whether to compute as Tb method. If False, compute as T(1), T(2),
             and Ta methods.
 
         esp : float, default=1e-16
-            A constant to prevent zero division. In the calculation, it is used
-            as `1 / (x + esp)`.
+            A constant to avoid zero division. It is used in the calculation as
+            `1 / (x + esp)`.
 
         is_simplified : bool, default=False
-            Compute the SN ratio with the simplified formula or not. The
+            Compute the SN ratio using the simplified formula or not. The
             simplified formula computes with `b**2 / ve`.
 
         Attributes
         ----------
         mean_X_ : ndarray of shape (n_features, )
-            Mean values of training data's each feature.
+            Mean values of each feature of the training data.
 
         mean_y_ : float or ndarray of shape (n_features, )
             Mean value of target values.
@@ -59,7 +59,7 @@ class T(RegressorMixin, BaseEstimator):
             Number of features seen during fit.
 
         feature_names_in_ : ndarray of shape (n_features_in_, )
-            Names of features seen during fit. Defined only when X has feature
+            Names of features seen during the fit. Defined only if X has feature
             names that are all strings.
         """
         self.tb = tb
@@ -82,8 +82,8 @@ class T(RegressorMixin, BaseEstimator):
             A binary array indicating which sample of the training data is the
             unit space (0 for the unit space, 1 for the signal data); if None,
             the training data is not divided into the unit space and the signal
-            data, but is computed as the Ta method. It is ignored when computing
-            as the Tb method.
+            data, but is computed as the Ta method. It is ignored when the Tb
+            method is computed.
 
         Returns
         -------
@@ -137,7 +137,7 @@ class T(RegressorMixin, BaseEstimator):
 
     def predict(self, X, y=None):
         """
-        Precit using fitted model.
+        Predict using the fitted model.
 
         Parameters
         ----------
@@ -171,7 +171,7 @@ class T(RegressorMixin, BaseEstimator):
 
     def score(self, X, y):
         """
-        Return the SN ratio of overall estimate.
+        Return the SN ratio of the integrated estimate.
 
         Parameters
         ----------
@@ -184,9 +184,9 @@ class T(RegressorMixin, BaseEstimator):
         Returns
         -------
         n : float
-            SN ratio of overall estimation. For the T(1), T(2), and Ta methods,
-            it is computed from M_True and M_Pred, and for the Tb method, it is
-            computed from y_True and y_Pred.
+            SN ratio of the integrated estimate. It is computed from M_True and
+            M_Pred for the T(1), T(2) and Ta methods, and from y_True and y_Pred
+            for the Tb method.
         """
         check_is_fitted(self)
 
@@ -226,9 +226,10 @@ class T(RegressorMixin, BaseEstimator):
         Returns
         -------
         n : ndarray of shape (n_features, )
-            _description_
+            SN ratio between each feature and the target values.
 
         b : ndarray of shape (n_features, )
+            Sensitivity between each feature and the target values.
         """
         r = np.sum(y**2)
         L = np.dot(X.T, y)
