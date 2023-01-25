@@ -1,5 +1,5 @@
 """
-MSR method module.
+MSR Method Module.
 """
 
 # Authors: Shota Fukuda <st_fukuda@outlook.jp>
@@ -14,16 +14,16 @@ from sklearn.utils.validation import check_is_fitted
 class MSR(RegressorMixin, BaseEstimator):
     def __init__(self, *, delta: float = 1e-4, esp: float = 1e-16):
         """
-        MSR: Multiple Simple Regression.
+        MSR: Multiple Single Regression.
 
         Parameters
         ----------
         delta : float, default=1e-4
-            Threshold for stopping repeated comuputes.
+            Threshold for stopping repeated computations.
 
         esp : float, default=1e-16
-            A constant to prevent zero division. In the calculation, it is used
-            as `1 / (x + esp)`.
+            A constant to avoid zero division. It is used in the calculation as
+            `1 / (x + esp)`.
 
         Attributes
         ----------
@@ -31,7 +31,7 @@ class MSR(RegressorMixin, BaseEstimator):
             Mean values of each feature of the training data.
 
         mean_y_ : float
-            Mean value of true values for `X`.
+            Mean value of target values.
 
         coef_ : ndarray of shape (n_features, )
             Estimated coefficients for the MSR.
@@ -40,13 +40,13 @@ class MSR(RegressorMixin, BaseEstimator):
             Number of features seen during fit.
 
         feature_names_in_ : ndarray of shape (n_features_in_, )
-            Names of features seen during fit. Defined only when X has feature
+            Names of features seen during the fit. Defined only if X has feature
             names that are all strings.
 
         References
         ----------
-        前田誠. (2017). T 法 (1) の考え方を利用した新しい回帰手法の提案. 品質,
-        47(2), 185-194.
+        前田誠. (2017). T 法 (1) の考え方を利用した新しい回帰手法の提案. 品質, 47(2),
+        185-194.
         """
         self.delta = delta
         self.esp = esp
@@ -160,7 +160,7 @@ class MSR(RegressorMixin, BaseEstimator):
 
     def predict(self, X, y=None):
         """
-        Precit using fitted model.
+        Predict using the fitted model.
 
         Parameters
         ----------
