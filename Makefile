@@ -23,7 +23,7 @@ install:
 	@pre-commit install
 
 update:
-	@poetry update
+	@poetry update --with test,docs
 	@pre-commit autoupdate
 
 format:
