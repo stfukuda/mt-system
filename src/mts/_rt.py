@@ -1,5 +1,5 @@
 """
-RT method module.
+RT Method Module.
 """
 
 # Authors: Shota Fukuda <st_fukuda@outlook.jp>
@@ -24,24 +24,24 @@ class RT(BaseEstimator):
         RT method.
 
         The RT method is an unsupervised learning method used for pattern
-        recognition in quality engineering. The method learns the mean value of
-        each feature in the unit space, the sensitivity and SN ratio of each
-        sample, and the associated covariance matrix of the sensitivity and SN
-        ratio, and compute MD values based on these values.
+        recognition in quality engineering. The method learns the mean of each
+        feature in unit space, the sensitivity and SN ratio of each sample, and
+        the associated covariance matrix of the sensitivity and SN ratio, and
+        computes MD values based on these values.
 
         Parameters
         ----------
         ddof : int, default=1
-            It means the delta degree of freedom. The divisor used in the
-            calculation is `N - ddof`, where `N` is the number of samples.
+            It means the delta degrees of freedom. The divisor used in the is
+            `N - ddof`, where `N` is the number of samples.
 
         esp : float, default=1e-16
-            A constant to prevent zero division. In the calculation, it is used
-            as `1 / (x + esp)`.
+            A constant to avoid zero division. It is used in the calculation as
+            `1 / (x + esp)`.
 
         threshold : float, default=4.0
             Threshold. A multiple of the standard deviation of the MD values in
-            the unit space. IF 4, threshold is 4 sigma.
+            the unit space. If 4, threshold is 4 sigma.
 
         return_sqrt : bool, default=False
             Return the square root of the MD values or not.
@@ -49,12 +49,12 @@ class RT(BaseEstimator):
         Attributes
         ----------
         mean_X_ : ndarray of shape (n_features, )
-            Mean values of training data's each feature.
+            Mean values of each feature of the training data.
 
         mean_Y_ : ndarray of shape (2, )
-            Mean values of sensitivity and error variance reciprocal.
-            `mean_Y_[0]` is sensitivity mean value, and `mean_Y_[1]` is error
-            variance reciprocal.
+            Means of sensitivity and error variance reciprocals. Mean_Y_[0]` is
+            the sensitivity mean, and Mean_Y_[1]` is the error variance
+            reciprocal.
 
         covariance_ : ndarray of shape (2, 2)
             Variance-covariance matrix of sensitivity and error variance
@@ -64,14 +64,14 @@ class RT(BaseEstimator):
             Adjoint matrix of `covariance_`.
 
         dist_ : ndarray of shape(n_samples, )
-            Mahalanobis distances of the training set (on which fit is called)
-            observations.
+            Mahalanobis distances of the training set (on which the fit is
+            called) observations.
 
         n_features_in_ : int
             Number of features seen during fit.
 
         feature_names_in_ : ndarray of shape (n_features_in_, )
-            Names of features seen during fit. Defined only when X has feature
+            Names of features seen during the fit. Defined only if X has feature
             names that are all strings.
         """
         self.ddof = ddof
@@ -124,7 +124,7 @@ class RT(BaseEstimator):
 
     def predict(self, X, y=None):
         """
-        Predict labels of X according to fitted model.
+        Predict the labels of X according to the fitted model.
 
         Parameters
         ----------
@@ -147,7 +147,7 @@ class RT(BaseEstimator):
 
     def fit_predict(self, X, y=None):
         """
-        Perform fit on X and returns labels for X.
+        Perform Fit to X and Return Labels for X.
 
         Parameters
         ----------
@@ -166,7 +166,7 @@ class RT(BaseEstimator):
 
     def mahalanobis(self, X):
         """
-        Compute the mahalanobis distances (MD values).
+        Compute the Mahalanobis distances (MD values).
 
         Parameters
         ----------
@@ -193,7 +193,7 @@ class RT(BaseEstimator):
 
     def score(self, X, y):
         """
-        Return the ROCAUC on the given test data and labels.
+        Return the ROCAUC to the given test data and labels.
 
         Parameters
         ----------
@@ -216,7 +216,7 @@ class RT(BaseEstimator):
 
     def score_samples(self, X):
         """
-        Compute the mahalanobis distandes (MD values).
+        Compute the Mahalanobis distances (MD values).
 
         Parameters
         ----------
@@ -247,8 +247,9 @@ class RT(BaseEstimator):
         Returns
         -------
         Y : ndarray of shape (n_samples, 2)
-            Sensitivity and SN ratio. Where Y[i, 0] is the sensitivity of the
-            i-th sample and Y[i, 1] is the SN ratio of the i-th sample.
+            Sensitivity and SN Ratio. Where Y[i, 0] is the sensitivity of the
+            i-th sample and Y[i, 1] is the Y[i, 1] is the SN ratio of the i-th
+            sample.
         """
         std_X = X - mean_X[None, :]
 
@@ -276,7 +277,7 @@ class RT(BaseEstimator):
         Returns
         -------
         precision : ndarray of shape (n_features, n_features)
-            Adjoint matrix of covariance.
+            Adjoint matrix of the covariance matrix.
         """
         precision = np.empty((2, 2))
         precision[0, 0] = covariance[1, 1]
@@ -288,18 +289,18 @@ class RT(BaseEstimator):
 
     def _mahalanobis(self, Y, mean_Y, precision):
         """
-        Computes MD values.
+        Compute Mahalanobis distances (MD values).
 
         Parameters
         ----------
         Y : ndarray of shape (n_samples, 2)
-            Sensitivity and SN ratio of samples.
+            The sensitivity and the SN ratio of the samples.
 
         mean_Y : ndarray of shape (2, )
             Mean values of Y in the unit space.
 
         precision : ndarray of shape (2, 2), default=None
-            Adjoint matrix of covariance in the unti space.
+            Adjoint matrix of the covariance matrix in unti space.
 
         Returns
         -------
