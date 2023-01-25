@@ -28,9 +28,6 @@
         <div class="wy-side-nav-search" >
             <a href="../../index.html" class="icon icon-home"> MT-system
           </a>
-              <div class="version">
-                0.0.0
-              </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" />
@@ -70,7 +67,7 @@
 
   <h1>Source code for mts._mt</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">MT, MTA and Standardized-Variation-Pressure methods module.</span>
+<span class="sd">MT, MTA and Standardized Variation Pressure Methods Module.</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="c1"># Authors: Shota Fukuda &lt;st_fukuda@outlook.jp&gt;</span>
@@ -101,8 +98,8 @@
 
 <span class="sd">        The MT, MTA and SVP methods are unsupervised learning methods used for</span>
 <span class="sd">        pattern recognition in quality engineering. These methods learn the mean</span>
-<span class="sd">        and standard deviation of each feature and the correlation matrix</span>
-<span class="sd">        inverse of the training data, and compute MD values based on these</span>
+<span class="sd">        and standard deviation of each feature and the inverse correlation</span>
+<span class="sd">        matrix of the training data, and compute MD values based on these</span>
 <span class="sd">        values. The training data is called the unit space and usually contains</span>
 <span class="sd">        only normal data. The MTA method learns an adjoint matrix instead of an</span>
 <span class="sd">        inverse matrix to deal with multicolinearity. The SVP method does not</span>
@@ -114,22 +111,22 @@
 <span class="sd">            Computation method.</span>
 
 <span class="sd">        ddof : int, default=1</span>
-<span class="sd">            It means the delta degree of freedom. The divisor used in the</span>
-<span class="sd">            calculation is `N - ddof`, where `N` is the number of samples.</span>
+<span class="sd">            It means the delta degrees of freedom. The divisor used in the is</span>
+<span class="sd">            `N - ddof`, where `N` is the number of samples.</span>
 
 <span class="sd">        esp : float, default=1e-16</span>
-<span class="sd">            A constant to prevent zero division. In the calculation, it is used</span>
-<span class="sd">            as `1 / (x + esp)`.</span>
+<span class="sd">            A constant to avoid zero division. It is used in the calculation as</span>
+<span class="sd">            `1 / (x + esp)`.</span>
 
 <span class="sd">        kind : {&quot;p&quot;, &quot;f&quot;, &quot;chi2&quot;, &quot;specify&quot;}, default=&quot;specify&quot;</span>
 <span class="sd">            The distribution used to determine normal and abnormal thresholds.</span>
 
 <span class="sd">        a : float, default=0.05</span>
-<span class="sd">            Right side significance level. Use to determine the threshold, if</span>
-<span class="sd">            kind is set to f or chi2.</span>
+<span class="sd">            Right side significance level. Use to set the threshold when type is</span>
+<span class="sd">            set to `f` or `chi2`.</span>
 
 <span class="sd">        threshold : float, default=4.0</span>
-<span class="sd">            Threshold to use if kind is set to specify.</span>
+<span class="sd">            Threshold to use when `kind` is set to `specify`.</span>
 
 <span class="sd">        return_sqrt : bool, default=False</span>
 <span class="sd">            Return the square root of the MD value or not.</span>
@@ -137,7 +134,7 @@
 <span class="sd">        Attributes</span>
 <span class="sd">        ----------</span>
 <span class="sd">        mean_ : ndarray of shape (n_features, )</span>
-<span class="sd">            Mean values of each feature of the training data.</span>
+<span class="sd">            Means of each feature of the training data.</span>
 
 <span class="sd">        scale_ : ndarray of shape (n_features, )</span>
 <span class="sd">            Standard deviation values of each feature of the training data.</span>
@@ -149,14 +146,14 @@
 <span class="sd">            The inverse or adjoint matrix of covariance_.</span>
 
 <span class="sd">        dist_ : ndarray of shape(n_samples, )</span>
-<span class="sd">            Mahalanobis distances of the training set (on which fit is called)</span>
-<span class="sd">            observations.</span>
+<span class="sd">            Mahalanobis distances of the training set (on which the fit is</span>
+<span class="sd">            called) observations.</span>
 
 <span class="sd">        n_features_in_ : int</span>
 <span class="sd">            Number of features seen during fit.</span>
 
 <span class="sd">        feature_names_in_ : ndarray of shape (n_features_in_, )</span>
-<span class="sd">            Names of features seen during fit. Defined only when X has feature</span>
+<span class="sd">            Names of features seen during the fit. Defined only if X has feature</span>
 <span class="sd">            names that are all strings.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">method</span> <span class="o">=</span> <span class="n">method</span>
@@ -219,7 +216,7 @@
 
 <div class="viewcode-block" id="MT.predict"><a class="viewcode-back" href="../../mts.html#mts.MT.predict">[docs]</a>    <span class="k">def</span> <span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Predict labels of X according to fitted model.</span>
+<span class="sd">        Predict the labels of X according to the fitted model.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -240,7 +237,7 @@
 
 <div class="viewcode-block" id="MT.fit_predict"><a class="viewcode-back" href="../../mts.html#mts.MT.fit_predict">[docs]</a>    <span class="k">def</span> <span class="nf">fit_predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Perform fit on X and returns labels for X.</span>
+<span class="sd">        Perform Fit to X and Return Labels for X.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -259,7 +256,7 @@
 
 <div class="viewcode-block" id="MT.mahalanobis"><a class="viewcode-back" href="../../mts.html#mts.MT.mahalanobis">[docs]</a>    <span class="k">def</span> <span class="nf">mahalanobis</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Compute the mahalanobis distances (MD values).</span>
+<span class="sd">        Compute the Mahalanobis distances (MD values).</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -281,7 +278,7 @@
 
 <div class="viewcode-block" id="MT.score"><a class="viewcode-back" href="../../mts.html#mts.MT.score">[docs]</a>    <span class="k">def</span> <span class="nf">score</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Return the ROCAUC on the given test data and labels.</span>
+<span class="sd">        Return the ROCAUC to the given test data and labels.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -304,7 +301,7 @@
 
 <div class="viewcode-block" id="MT.score_samples"><a class="viewcode-back" href="../../mts.html#mts.MT.score_samples">[docs]</a>    <span class="k">def</span> <span class="nf">score_samples</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Compute the mahalanobis distandes (MD values).</span>
+<span class="sd">        Compute the Mahalanobis distances (MD values).</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -330,10 +327,10 @@
 <span class="sd">            Covariance matrix.</span>
 
 <span class="sd">        i : int</span>
-<span class="sd">            Cofactor row number. Start of 0.</span>
+<span class="sd">            Cofactor row number. Start from 0.</span>
 
 <span class="sd">        j : int</span>
-<span class="sd">            Cofactor column number. Start of 0.</span>
+<span class="sd">            Cofactor column number. Start from 0.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -357,7 +354,7 @@
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        precision : ndarray of shape (n_features, n_features)</span>
-<span class="sd">            The inverse or adjoint matrix of covariance.</span>
+<span class="sd">            The inverse or adjoint matrix of the covariance matrix.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s2">&quot;mt&quot;</span><span class="p">:</span>
             <span class="n">precision</span> <span class="o">=</span> <span class="n">pinvh</span><span class="p">(</span><span class="n">covariance</span><span class="p">,</span> <span class="n">check_finite</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
@@ -379,7 +376,7 @@
 
     <span class="k">def</span> <span class="nf">_mahalanobis</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">mean</span><span class="p">,</span> <span class="n">scale</span><span class="p">,</span> <span class="n">precision</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Compute mahalanobis distances (MD values).</span>
+<span class="sd">        Compute Mahalanobis distances (MD values).</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>

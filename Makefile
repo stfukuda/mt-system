@@ -7,7 +7,7 @@ setup:
 	@git checkout -b setup
 	@git add .
 	@git commit -m "chore: 🤖 add template folder"
-	@poetry install --with dev,cqa,test,docs
+	@poetry install --with test,docs
 	@git add poetry.lock
 	@git commit -m "chore: 🤖 add poetry.lock"
 	@pre-commit install
@@ -19,11 +19,11 @@ setup:
 	@git checkout -d setup
 
 install:
-	@poetry install --with dev,cqa,test,docs
+	@poetry install --with test,docs
 	@pre-commit install
 
 update:
-	@poetry update
+	@poetry update --with test,docs
 	@pre-commit autoupdate
 
 format:
@@ -35,7 +35,7 @@ lint:
 	-@bandit -r ./src ./tests
 
 test:
-	@pytest --cov=src --cov-report=term-missing --cov-report=html
+	@pytest --cov=src --cov-report=term-missing --cov-report=html -n 4
 
 html:
 	@sphinx-build -b html ./docs/source ./docs
@@ -48,5 +48,6 @@ clean:
 	-@rm -rf .pytest_cache
 	-@rm -rf dist
 	-@rm -rf htmlcov
-	-@find ./ -name "__pycache__" -exec rm -rf {} \;
+	-@rm -rf ./src/__pycache__
+	-@rm -rf ./tests/__pycache__
 	-@rm -rf .coverage
