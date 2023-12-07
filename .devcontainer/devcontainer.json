@@ -1,113 +1,16 @@
 {
-	"name": "mt-system",
-	"image": "python:3.8",
-	"workspaceFolder": "/workspace",
-	"workspaceMount": "source=${localWorkspaceFolder},target=/workspace,type=bind,consistency=cached",
-	"remoteEnv": {
-		"PATH": "/root/.local/bin:${containerEnv:PATH}",
-		"LANG": "en_US.UTF-8"
-	},
-	"runArgs": [
-		"--name",
-		"mt-system"
-	],
-	"postCreateCommand": "./.devcontainer/postCreateCommand.sh",
-	"customizations": {
-		"vscode": {
-			"extensions": [
-				"MS-CEINTL.vscode-language-pack-ja",
-				"njpwerner.autodocstring",
-				"bungcip.better-toml",
-				"mhutchie.git-graph",
-				"eamodio.gitlens",
-				"oderwat.indent-rainbow",
-				"yzhang.markdown-all-in-one",
-				"goessner.mdmath",
-				"DavidAnson.vscode-markdownlint",
-				"christian-kohler.path-intellisense",
-				"ms-python.python",
-				"richie5um2.vscode-sort-json",
-				"redhat.vscode-yaml"
-			],
-			"settings": {
-				"[markdown]": {
-					"editor.defaultFormatter": "DavidAnson.vscode-markdownlint",
-					"editor.quickSuggestions": {
-						"comments": "off",
-						"other": "off",
-						"strings": "off"
-					},
-					"editor.unicodeHighlight.ambiguousCharacters": false,
-					"editor.unicodeHighlight.invisibleCharacters": false,
-					"editor.wordWrap": "on"
-				},
-				"[python]": {
-					"editor.defaultFormatter": "ms-python.python",
-					"editor.codeActionsOnSave": {
-						"source.organizeImports": true
-					},
-					"editor.rulers": [
-						72,
-						76,
-						80,
-						88
-					],
-					"editor.wordBasedSuggestions": false,
-					"gitlens.codeLens.symbolScopes": [
-						"!Module"
-					]
-				},
-				"[toml]": {
-					"editor.defaultFormatter": "bungcip.better-toml"
-				},
-				"autoDocstring.docstringFormat": "numpy",
-				"autoDocstring.startOnNewLine": true,
-				"editor.formatOnSave": true,
-				"editor.formatOnType": true,
-				"editor.renderWhitespace": "all",
-				"explorer.confirmDragAndDrop": false,
-				"extensions.autoUpdate": false,
-				"files.autoSave": "afterDelay",
-				"files.trimTrailingWhitespace": true,
-				"git.enableCommitSigning": true,
-				"isort.check": true,
-				"isort.importStrategy": "fromEnvironment",
-				"isort.path": [
-					"/usr/local/bin/isort"
-				],
-				"markdown.math.enabled": false,
-				"python.analysis.completeFunctionParens": true,
-				"python.analysis.extraPaths": [
-					"/usr/local/lib/python3.8/site-packages/",
-					"${workspaceFolder}/src/"
-				],
-				"python.autoComplete.extraPaths": [
-					"/usr/local/lib/python3.8/site-packages/",
-					"${workspaceFolder}/src/"
-				],
-				"python.envFile": "${workspaceFolder}/.env",
-				"python.formatting.blackPath": "/usr/local/bin/black",
-				"python.formatting.provider": "black",
-				"python.linting.banditArgs": [
-					"-c",
-					"pyproject.toml"
-				],
-				"python.linting.banditEnabled": true,
-				"python.linting.banditPath": "/usr/local/bin/bandit",
-				"python.linting.enabled": true,
-				"python.linting.flake8Enabled": true,
-				"python.linting.flake8Path": "/usr/local/bin/flake8",
-				"python.terminal.activateEnvironment": false,
-				"python.testing.pytestArgs": [
-					"tests"
-				],
-				"python.testing.pytestEnabled": true,
-				"redhat.telemetry.enabled": true,
-				"workbench.editorAssociations": {
-					"*.ipynb": "jupyter-notebook"
-				}
-			}
-		}
-	},
-	"shutdownAction": "stopContainer"
+  "name": "mt-system",
+  "image": "python:3.8",
+  "workspaceFolder": "/workspace",
+  "workspaceMount": "source=${localWorkspaceFolder},target=/workspace,type=bind,consistency=cached",
+  "remoteEnv": {
+    "PATH": "/root/.local/bin:${containerEnv:PATH}",
+    "LANG": "en_US.UTF-8"
+  },
+  "runArgs": [
+    "--name",
+    "mt-system"
+  ],
+  "postCreateCommand": "./.devcontainer/postCreateCommand.sh",
+  "shutdownAction": "stopContainer"
 }
