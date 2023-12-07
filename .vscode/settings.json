@@ -50,7 +50,7 @@
     ],
     "bandit.path": [
         "${workspaceFolder}/.venv/Scripts/bandit.exe",
-        "/usr/local/bin/bandit"
+        "/root/.local/share/pipx/venvs/poetry/bin/bandit"
     ],
     "editor.codeActionsOnSave": {
         "source.fixAll": true,
@@ -70,21 +70,22 @@
     "python.analysis.completeFunctionParens": true,
     "python.analysis.extraPaths": [
         "${workspaceFolder}/.venv/Lib/site-packages/",
-        "/usr/local/lib/python{{ cookiecutter.python_version }}/site-packages/",
+        "/root/.local/share/pipx/venvs/poetry/lib/python3.8/site-packages/",
         "${workspaceFolder}/src/"
     ],
     "python.analysis.typeCheckingMode": "basic",
     "python.autoComplete.extraPaths": [
         "${workspaceFolder}/.venv/Lib/site-packages/",
-        "/usr/local/lib/python{{ cookiecutter.python_version }}/site-packages/",
+        "/root/.local/share/pipx/venvs/poetry/lib/python3.8/site-packages/",
         "${workspaceFolder}/src/"
     ],
+    "python.defaultInterpreterPath": "/root/.local/share/pipx/venvs/poetry/bin/python3",
     "python.envFile": "${workspaceFolder}/.env",
     "python.terminal.activateEnvironment": false,
     "python.testing.pytestEnabled": true,
     "redhat.telemetry.enabled": true,
     "ruff.path": [
         "${workspaceFolder}/.venv/Scripts/ruff.exe",
-        "/usr/local/bin/ruff"
+        "/root/.local/share/pipx/venvs/poetry/bin/ruff"
     ]
 }
