@@ -2,54 +2,109 @@
 # See https://pre-commit.com/hooks.html for more hooks
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.4.0
+    rev: v4.5.0
     hooks:
-      - id: check-added-large-files
+      - id: check-added-large-files # Prevent giant files from being committed.
         args:
-          - "--maxkb=1000"
-      - id: check-ast
-      - id: check-builtin-literals
-      - id: check-case-conflict
-      - id: check-docstring-first
-      - id: check-json
-      - id: check-toml
-      - id: check-xml
-      - id: check-yaml
-      - id: debug-statements
-      - id: detect-aws-credentials
+          - "--maxkb=1000" # Specify what is "too large", default=500kb.
+          # - "--enforce-all" # Check all listed files not just those staged for addition.
+      - id: check-ast # Simply check whether files parse as valid python.
+      - id: check-builtin-literals # Require literal syntax when initializing empty or zero Python builtin types.
+        # args:
+        #   - "--ignore=type1,type2" # Ignore this requirement for specific builtin types.
+        #   - "--no-allow-dict-kwargs" # Forbid dict keyword syntax.
+      - id: check-case-conflict # Check for files with names that would conflict on a case-insensitive filesystem like MacOS HFS+ or Windows FAT.
+      - id: check-docstring-first # Checks for a common error of placing code before the docstring.
+      # - id: check-executables-have-shebangs # Checks that non-binary executables have a proper shebang.
+      - id: check-json # Attempts to load all json files to verify syntax.
+      - id: check-merge-conflict # Check for files that contain merge conflict strings.
+      #   args:
+      #     - "--assume-in-merge" # Allows running the hook when there is no ongoing merge operation.
+      # - id: check-shebang-scropts-are-executable # Checks that scripts with shebangs are executable.
+      - id: check-symlinks # Checks for symlinks which do not point to anything.
+      - id: check-toml # Attempts to load all TOML files to verify syntax.
+      - id: check-vcs-permalinks # Ensures that links to vcs websites are permalinks.
+        # args:
+        #   - "--additional-github-domain" # Add check for specified domain. Can be repeated multiple times.
+        #   - "DOMAIN" # For example, github.example.com
+      - id: check-xml # Attempts to load all xml files to verify syntax.
+      - id: check-yaml # Attempts to load all yaml files to verify syntax.
+        # args:
+        #   - "--allow-multiple-documents" # allow yaml files which use the multi-document syntax.
+        #   - "--unsafe" # Instead of loading the files, simply parse them for syntax. A syntax-only check enables extensions and unsafe constructs which would otherwise be forbidden. Using this option removes all guarantees of portability to other yaml implementations. Implies --allow-multiple-documents.
+      - id: debug-statements # Check for debugger imports and py37+ breakpoint() calls in python source.
+      - id: destroyed-symlinks # Detects symlinks which are changed to regular files with a content of a path which that symlink was pointing to. This usually happens on Windows when a user clones a repository that has symlinks but they do not have the permission to create symlinks.
+      - id: detect-aws-credentials # Checks for the existence of AWS secrets that you have set up with the AWS CLI. The following arguments are available:
         args:
-          - "--allow-missing-credentials"
-      - id: detect-private-key
-      - id: end-of-file-fixer
-      - id: name-tests-test
+          # - "--credentials-file" # additional AWS CLI style configuration file in a non-standard location to fetch configured credentials from. Can be repeated multiple times.
+          # - "CREDENTIALS_FILE"
+          - "--allow-missing-credentials" # Allow hook to pass when no credentials are detected.
+      - id: detect-private-key # Checks for the existence of private keys.
+      # - id: double-quote-string-fixer # This hook replaces double quoted strings with single quoted strings.
+      - id: end-of-file-fixer # Makes sure files end in a newline and only a newline.
+        exclude: \.json$
+      # - id: file-content-sorter # Sort the lines in specified files (defaults to alphabetical). You must provide the target files as input. Note that this hook WILL remove blank lines and does NOT respect any comments. All newlines will be converted to line feeds (\n).
+      #   args:
+      #     - "--ignore-case" # fold lower case to upper case characters.
+      #     - "unique" # ensure each line is unique.
+      # - id: fix-byte-order-marker # Removes UTF-8 byte order marker.
+      # - id: fix-encoding-pragma # Add # -*- coding: utf-8 -*- to the top of python files.
+      #   args:
+      #     - "--remove" # Remove the coding pragma (useful in a python3-only codebase).
+      # - id: forbid-new-submodules # Prevent addition of new git submodules. This is intended as a helper to migrate away from submodules. If you want to ban them entirely use forbid-submodules.
+      # - id: forbid-submodules # Forbids any submodules in the repository.
+      # - id: mix-line-ending # Replaces or checks mixed line ending.
+      #   args:
+      #     - "--fix=auto" # Replaces automatically the most frequent line ending. This is the default argument.
+      #     - "--fix=crlf" # Forces to replace line ending by respectively CRLF and LF. This option isn't compatible with git setup check-in LF check-out CRLF as git smudge this later than the hook is invoked.
+      #     - "--fix=lf" # Forces to replace line ending by respectively CRLF and LF. This option isn't compatible with git setup check-in LF check-out CRLF as git smudge this later than the hook is invoked.
+      #     - "--fix=no" # Checks if there is any mixed line ending without modifying any file.
+      - id: name-tests-test # Verifies that test files are named correctly.
         args:
-          - "--pytest-test-first"
-      - id: no-commit-to-branch
+          - "--pytest" # Ensure tests match .*_test\.py" (the default)
+          # - "--pytest-test-first" # Ensure tests match test_.*\.py
+          # - "--django" # Ensure tests match test.*\.py
+          # - "--unittest" # Ensure tests match test.*\.py
+      - id: no-commit-to-branch # Protect specific branches from direct checkins.
         args:
-          - "--branch"
-          - "main"
-          - "--branch"
-          - "develop"
-      - id: pretty-format-json
+          - "--branch" # May be specified multiple times to protect multiple branches.
+          - "main" # Branch name.
+          # - "--pattern" # Protect branches that match a supplied regex. May be specified multiple times.
+          # - "release/.*" # Branch pattern.
+      - id: pretty-format-json # Checks that all your JSON files are pretty. "Pretty" here means that keys are sorted and indented. You can configure this with the following commandline options:
+        exclude: |
+          (?x)(
+            devcontainer.json$|
+            extensions.json$|
+            launch.json$|
+            settings.json$
+          )
+
         args:
-          - "--autofix"
-        exclude: "^.devcontainer/devcontainer.json$"
-      - id: trailing-whitespace
-  - repo: https://github.com/pycqa/isort
-    rev: 5.11.4
+          - "--autofix" # Automatically format json files.
+      #     - "--indent" # Control the indentation (either a number for a number of spaces or a string of whitespace). Defaults to 2 spaces.
+      #     - "2" # Indent size.
+      #     - "--no-ensure-ascii" # Preserve unicode characters instead of converting to escape sequences.
+      #     - "--no-sort-keys" # When autofixing, retain the original key ordering (instead of sorting the keys).
+      #     - "--top-keys comma,separated,keys" # Keys to keep at the top of mappings.
+      # - id: requirements-txt-fixer # Sorts entries in requirements.txt and constraints.txt and removes incorrect entry for pkg-resources==0.0.0.
+      # - id: sort-simple-yaml # Sorts simple YAML files which consist only of top-level keys, preserving comments and blocks.
+      - id: trailing-whitespace # Trims trailing whitespace.
+        args:
+          - "--markdown-linebreak-ext=md" # To preserve Markdown hard linebreaks (or other extensions used by your markdownfiles).
+          # If for some reason you want to treat all files as markdown, use --markdown-linebreak-ext=*.
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.1.7
     hooks:
-      - id: isort
-  - repo: https://github.com/psf/black
-    rev: 22.12.0
-    hooks:
-      - id: black
-  - repo: https://github.com/pycqa/flake8
-    rev: 6.0.0
-    hooks:
-      - id: flake8
+      - id: ruff
+        args: [--fix]
+      - id: ruff-format
   - repo: https://github.com/pycqa/bandit
-    rev: 1.7.4
+    rev: 1.7.5
     hooks:
       - id: bandit
+        args:
+          - "-c"
+          - "pyproject.toml"
         additional_dependencies:
           - "bandit[toml]"
