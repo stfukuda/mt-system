@@ -79,7 +79,7 @@ class MSR(RegressorMixin, BaseEstimator):
         self : object
             Fitted model.
         """
-        X, y = self._validate_data(
+        X, y = self._validate_data(  # type: ignore
             X=X,
             y=y,
             reset=True,
@@ -177,11 +177,11 @@ class MSR(RegressorMixin, BaseEstimator):
         """
         check_is_fitted(self)
 
-        X = self._validate_data(X=X, reset=False)
+        X = self._validate_data(X=X, reset=False)  # type: ignore
 
         std_X = X - self.mean_X_[None, :]
 
         return np.dot(std_X, self.coef_) + self.mean_y_
 
     def _more_tags(self):
-        return RegressorMixin._more_tags(self)
+        return RegressorMixin._more_tags(self)  # type: ignore

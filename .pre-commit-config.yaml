@@ -42,7 +42,6 @@ repos:
       - id: detect-private-key # Checks for the existence of private keys.
       # - id: double-quote-string-fixer # This hook replaces double quoted strings with single quoted strings.
       - id: end-of-file-fixer # Makes sure files end in a newline and only a newline.
-        exclude: \.json$
       # - id: file-content-sorter # Sort the lines in specified files (defaults to alphabetical). You must provide the target files as input. Note that this hook WILL remove blank lines and does NOT respect any comments. All newlines will be converted to line feeds (\n).
       #   args:
       #     - "--ignore-case" # fold lower case to upper case characters.
@@ -72,14 +71,6 @@ repos:
           # - "--pattern" # Protect branches that match a supplied regex. May be specified multiple times.
           # - "release/.*" # Branch pattern.
       - id: pretty-format-json # Checks that all your JSON files are pretty. "Pretty" here means that keys are sorted and indented. You can configure this with the following commandline options:
-        exclude: |
-          (?x)(
-            devcontainer.json$|
-            extensions.json$|
-            launch.json$|
-            settings.json$
-          )
-
         args:
           - "--autofix" # Automatically format json files.
       #     - "--indent" # Control the indentation (either a number for a number of spaces or a string of whitespace). Defaults to 2 spaces.
