@@ -96,7 +96,7 @@ class RT(BaseEstimator):
         self : object
             Fitted model.
         """
-        X = self._validate_data(
+        X = self._validate_data(  # type: ignore
             X=X,
             reset=True,
             ensure_min_samples=2,
@@ -180,7 +180,7 @@ class RT(BaseEstimator):
         """
         check_is_fitted(self)
 
-        X = self._validate_data(X=X, reset=False)
+        X = self._validate_data(X=X, reset=False)  # type: ignore
 
         Y = self._compute_Y(X, self.mean_X_)
 
@@ -210,7 +210,7 @@ class RT(BaseEstimator):
         """
         check_is_fitted(self)
 
-        X, y = self._validate_data(X=X, y=y, reset=False)
+        X, y = self._validate_data(X=X, y=y, reset=False)  # type: ignore
 
         return roc_auc_score(y, self.mahalanobis(X=X))
 

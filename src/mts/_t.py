@@ -90,7 +90,7 @@ class T(RegressorMixin, BaseEstimator):
         self : object
             Fitted model.
         """
-        X, y = self._validate_data(
+        X, y = self._validate_data(  # type: ignore
             X=X,
             y=y,
             reset=True,
@@ -154,7 +154,7 @@ class T(RegressorMixin, BaseEstimator):
         """
         check_is_fitted(self)
 
-        X = self._validate_data(X=X, reset=False, estimator=self)
+        X = self._validate_data(X=X, reset=False, estimator=self)  # type: ignore
 
         std_X = X - self.mean_X_
 
@@ -190,7 +190,7 @@ class T(RegressorMixin, BaseEstimator):
         """
         check_is_fitted(self)
 
-        X, y = self._validate_data(X=X, y=y, reset=False)
+        X, y = self._validate_data(X=X, y=y, reset=False)  # type: ignore
 
         if self.tb:
             M_true = y
@@ -243,4 +243,4 @@ class T(RegressorMixin, BaseEstimator):
         return n, b
 
     def _more_tags(self):
-        return RegressorMixin._more_tags(self)
+        return RegressorMixin._more_tags(self)  # type: ignore
