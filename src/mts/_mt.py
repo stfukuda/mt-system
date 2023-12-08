@@ -50,7 +50,7 @@ class MT(BaseEstimator):
             A constant to avoid zero division. It is used in the calculation as
             `1 / (x + esp)`.
 
-        kind : {"p", "f", "chi2", "specify"}, default="specify"
+        kind : {"k", "f", "chi2", "specify"}, default="specify"
             The distribution used to determine normal and abnormal thresholds.
 
         a : float, default=0.05
@@ -72,10 +72,14 @@ class MT(BaseEstimator):
             Standard deviation values of each feature of the training data.
 
         covariance_ : ndarray of shape (n_features, n_features)
-            Correlation matrix of the training data.
+            Correlation matrix, variance-covariance matrix, or identity matrix
+            of the training data; correlation matrix if "method" is "mt",
+            variance-covariance matrix if "method" is "mta", or identity matrix
+            if "method" is "svp".
 
         precision_ : ndarray of shape (n_features, n_features)
-            The inverse or adjoint matrix of covariance_.
+            The inverse matrix or adjoint matrix of covariance_; if method is
+            svp, then identity matrix.
 
         dist_ : ndarray of shape(n_samples, )
             Mahalanobis distances of the training set (on which the fit is
@@ -113,7 +117,7 @@ class MT(BaseEstimator):
         self : object
             Fitted model.
         """
-        X = self._validate_data(
+        X = self._validate_data(  # type: ignore
             X=X,
             reset=True,
             ensure_min_samples=2,
@@ -121,26 +125,33 @@ class MT(BaseEstimator):
             estimator=self,
         )
 
-        n, p = X.shape  # type: ignore
+        n, k = X.shape  # type: ignore
 
         self.mean_ = np.mean(X, axis=0)
         self.scale_ = np.std(X, ddof=self.ddof, axis=0)
 
-        std_X = (X - self.mean_[None, :]) / (self.scale_[None, :] + self.esp)
+        if self.method == "mt":
+            std_X = (X - self.mean_[None, :]) / (self.scale_[None, :] + self.esp)
+            self.covariance_ = np.corrcoef(std_X, rowvar=False)
+        elif self.method == "mta":
+            std_X = X - self.mean_[None, :]
+            self.covariance_ = np.cov(std_X, rowvar=False)
+        else:
+            std_X = (X - self.mean_[None, :]) / (self.scale_[None, :] + self.esp)
+            self.covariance_ = np.eye(k)
 
-        self.covariance_ = np.corrcoef(std_X, rowvar=False)
         self.precision_ = self._get_precision(self.covariance_)
 
         self.dist_ = self._mahalanobis(X, self.mean_, self.scale_, self.precision_)
 
-        if self.kind == "p":
-            self.threshold_ = 4 * p
+        if self.kind == "k":
+            self.threshold_ = 4 * k
         elif self.kind == "f":
             self.threshold_ = (
-                (p * (n - 1) * (n + 1)) / (n * (n - p)) * f.isf(self.a, p, n - p)
+                (k * (n - 1) * (n + 1)) / (n * (n - k)) * f.isf(self.a, k, n - k)
             )
         elif self.kind == "chi2":
-            self.threshold_ = chi2.isf(self.a, p)
+            self.threshold_ = chi2.isf(self.a, k)
         else:
             self.threshold_ = self.threshold
 
@@ -202,7 +213,7 @@ class MT(BaseEstimator):
         """
         check_is_fitted(self)
 
-        X = self._validate_data(X=X, reset=False)
+        X = self._validate_data(X=X, reset=False)  # type: ignore
 
         MD = self._mahalanobis(X, self.mean_, self.scale_, self.precision_)
 
@@ -227,7 +238,7 @@ class MT(BaseEstimator):
         """
         check_is_fitted(self)
 
-        X, y = self._validate_data(X=X, y=y, reset=False)
+        X, y = self._validate_data(X=X, y=y, reset=False)  # type: ignore
 
         return roc_auc_score(y, self.mahalanobis(X=X))
 
@@ -297,12 +308,10 @@ class MT(BaseEstimator):
 
             for i in range(m):
                 for j in range(m):
-                    precision[i, j] = self._cofactor(covariance, i, j)
-
-            precision = precision.T
+                    precision[j, i] = self._cofactor(covariance, i, j)
         else:
-            n, m = covariance.shape
-            precision = np.eye(n, m)
+            m = covariance.shape[0]
+            precision = np.eye(m)
 
         return precision
 
@@ -329,7 +338,11 @@ class MT(BaseEstimator):
         MD : ndarray of shape (n_samples, )
             Mahalanobis distances (MD values).
         """
-        std_X = (X - mean[None, :]) / (scale[None, :] + self.esp)
+
+        if self.method in ["mt", "svp"]:
+            std_X = (X - mean[None, :]) / (scale[None, :] + self.esp)
+        else:
+            std_X = X - mean[None, :]
 
         MD = (std_X.dot(precision) * std_X).mean(axis=1)
 
