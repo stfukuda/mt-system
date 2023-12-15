@@ -18,8 +18,10 @@ export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || pr
 nvm install --lts
 nvm use --lts
 
+# Commitizen
 npm i -g npm git-cz
 
+# Poetry
 python3 -m pip install -U pip setuptools wheel
 python3 -m pip install -U --user pipx
 python3 -m pipx ensurepath --force
