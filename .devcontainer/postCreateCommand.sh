@@ -4,12 +4,6 @@
 apt-get update
 apt-get install -y git-flow
 
-apt-get update
-apt-get install -y gnupg2 locales vim
-
-echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen
-locale-gen
-
 # NVM
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
 export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
