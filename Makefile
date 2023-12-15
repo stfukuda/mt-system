@@ -59,10 +59,10 @@ docs:
 
 .PHONY: build
 build:
-	@branch_name=$(git rev-parse --abbrev-ref HEAD)
-	@git checkout main
-	@poetry build
-	@git checkout $$branch_name
+	@branch_name=$$(git rev-parse --abbrev-ref HEAD); \
+	git checkout main; \
+	poetry build; \
+	git checkout $$branch_name
 
 .PHONY: clean
 clean:
