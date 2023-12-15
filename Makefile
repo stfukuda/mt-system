@@ -7,8 +7,7 @@ help:
 	@echo "Targets:"
 	@echo "  setup   Setup git and the project dependencies"
 	@echo "  update  Update the project dependencies"
-	@echo "  format  Run formatters to format the source code"
-	@echo "  lint    Run linters to check the source code"
+	@echo "  check   Run formatters and linters to the source code"
 	@echo "  docs    Build the project documentation"
 	@echo "  build   Build the project to python package and upload to pypi"
 	@echo "  clean   Clean up generated files"
@@ -48,12 +47,9 @@ update:
 	@poetry export -f requirements.txt --output requirements-dev.txt --without-hashes --without-urls --with dev,test,docs
 	@poetry run pre-commit autoupdate
 
-.PHONY: format
-format:
-	-@poetry run ruff format ./src, ./tests
-
-.PHONY: lint
-lint:
+.PHONY: check
+check:
+	-@poetry run ruff format ./src ./tests
 	-@poetry run ruff check ./src ./tests --fix
 	-@poetry run bandit -c pyproject.toml -r ./src ./tests
 
