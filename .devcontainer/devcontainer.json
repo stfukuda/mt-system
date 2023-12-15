@@ -4,8 +4,7 @@
   "workspaceFolder": "/workspace",
   "workspaceMount": "source=${localWorkspaceFolder},target=/workspace,type=bind,consistency=cached",
   "remoteEnv": {
-    "PATH": "/root/.local/bin:${containerEnv:PATH}",
-    "LANG": "en_US.UTF-8"
+    "PATH": "/root/.local/bin:${containerEnv:PATH}"
   },
   "runArgs": [
     "--name",

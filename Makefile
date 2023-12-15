@@ -5,10 +5,9 @@ help:
 	@echo "Usage: make [target]"
 	@echo ""
 	@echo "Targets:"
-	@echo "  setup   Setup the project dependencies"
+	@echo "  setup   Setup git and the project dependencies"
 	@echo "  update  Update the project dependencies"
-	@echo "  format  Run formatters to format the source code"
-	@echo "  lint    Run linters to check the source code"
+	@echo "  check   Run formatters and linters to the source code"
 	@echo "  docs    Build the project documentation"
 	@echo "  build   Build the project to python package and upload to pypi"
 	@echo "  clean   Clean up generated files"
@@ -25,7 +24,9 @@ setup:
 			git add .; \
 			git commit -m "add template folder"; \
 			poetry install --with dev,test,docs; \
-			git add poetry.lock; \
+			poetry export -f requirements.txt --output requirements.txt --without-hashes --without-urls; \
+			poetry export -f requirements.txt --output requirements-dev.txt --without-hashes --without-urls --with dev,test,docs; \
+			git add poetry.lock requirements.txt requirements-dev.txt; \
 			git commit -m "add poetry.lock"; \
 			poetry run pre-commit install; \
 			poetry run pre-commit autoupdate; \
@@ -33,6 +34,8 @@ setup:
 			git commit -m "update pre-commit hooks revision or tag"; \
 		else \
 			poetry install --with dev,test,docs; \
+			poetry export -f requirements.txt --output requirements.txt --without-hashes --without-urls; \
+			poetry export -f requirements.txt --output requirements-dev.txt --without-hashes --without-urls --with dev,test,docs; \
 		fi; \
 		echo "Setup is complete."; \
 	fi
@@ -40,15 +43,13 @@ setup:
 .PHONY: update
 update:
 	@poetry update --with dev,test,docs
-	@poetry export -f requirements.txt --output requirements.txt
+	@poetry export -f requirements.txt --output requirements.txt --without-hashes --without-urls
+	@poetry export -f requirements.txt --output requirements-dev.txt --without-hashes --without-urls --with dev,test,docs
 	@poetry run pre-commit autoupdate
 
-.PHONY: format
-format:
-	-@poetry run ruff format ./src, ./tests
-
-.PHONY: lint
-lint:
+.PHONY: check
+check:
+	-@poetry run ruff format ./src ./tests
 	-@poetry run ruff check ./src ./tests --fix
 	-@poetry run bandit -c pyproject.toml -r ./src ./tests
 
@@ -58,10 +59,10 @@ docs:
 
 .PHONY: build
 build:
-	@branch_name=$(git rev-parse --abbrev-ref HEAD)
-	@git checkout main
-	@poetry build
-	@git checkout $$branch_name
+	@branch_name=$$(git rev-parse --abbrev-ref HEAD); \
+	git checkout main; \
+	poetry build; \
+	git checkout $$branch_name
 
 .PHONY: clean
 clean:
