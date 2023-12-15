@@ -1,5 +1,9 @@
 #!/bin/sh
 
+# Git-Flow
+apt-get update
+apt-get install -y git-flow
+
 apt-get update
 apt-get install -y gnupg2 locales vim
 
