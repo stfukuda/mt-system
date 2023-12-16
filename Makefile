@@ -6,6 +6,7 @@ help:
 	@echo ""
 	@echo "Targets:"
 	@echo "  setup   Setup git and the project dependencies"
+	@echo "  sync    Synchronize development environments"
 	@echo "  update  Update the project dependencies"
 	@echo "  check   Run formatters and linters to the source code"
 	@echo "  docs    Build the project documentation"
@@ -39,6 +40,10 @@ setup:
 		fi; \
 		echo "Setup is complete."; \
 	fi
+
+.PHONY: sync
+sync:
+	@poetry install --with dev,test,docs
 
 .PHONY: update
 update:
