@@ -5,13 +5,23 @@ RT Method Module.
 # Authors: Shota Fukuda <st_fukuda@outlook.jp>
 # License: BSD-3-Clause
 
+from numbers import Integral, Real
+
 import numpy as np
 from sklearn.base import BaseEstimator
 from sklearn.metrics import roc_auc_score
+from sklearn.utils._param_validation import Interval
 from sklearn.utils.validation import check_is_fitted
 
 
 class RT(BaseEstimator):
+    _parameter_constraints: dict = {
+        "ddof": [Interval(Integral, 0, None, closed="left")],
+        "esp": [Interval(Real, 0, None, closed="right")],
+        "threshold": [Interval(Real, 0, None, closed="right")],
+        "return_sqrt": ["boolean"],
+    }
+
     def __init__(
         self,
         *,
@@ -96,6 +106,8 @@ class RT(BaseEstimator):
         self : object
             Fitted model.
         """
+        self._validate_params()  # type: ignore
+
         X = self._validate_data(  # type: ignore
             X=X,
             reset=True,

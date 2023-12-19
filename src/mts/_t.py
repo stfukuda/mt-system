@@ -5,12 +5,21 @@ T(1), T(2), Ta and Tb Methods Module.
 # Authors: Shota Fukuda <st_fukuda@outlook.jp>
 # License: BSD-3-Clause
 
+from numbers import Real
+
 import numpy as np
 from sklearn.base import BaseEstimator, RegressorMixin
+from sklearn.utils._param_validation import Interval
 from sklearn.utils.validation import check_is_fitted
 
 
 class T(RegressorMixin, BaseEstimator):
+    _parameter_constraints: dict = {
+        "tb": ["boolean"],
+        "esp": [Interval(Real, 0, None, closed="right")],
+        "is_simplified": ["boolean"],
+    }
+
     def __init__(
         self, *, tb: bool = False, esp: float = 1e-16, is_simplified: bool = False
     ):
@@ -90,6 +99,8 @@ class T(RegressorMixin, BaseEstimator):
         self : object
             Fitted model.
         """
+        self._validate_params()  # type: ignore
+
         X, y = self._validate_data(  # type: ignore
             X=X,
             y=y,
