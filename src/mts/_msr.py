@@ -5,13 +5,21 @@ MSR Method Module.
 # Authors: Shota Fukuda <st_fukuda@outlook.jp>
 # License: BSD-3-Clause
 
+from numbers import Real
+
 import numpy as np
 from sklearn.base import BaseEstimator, RegressorMixin
 from sklearn.model_selection import KFold
+from sklearn.utils._param_validation import Interval
 from sklearn.utils.validation import check_is_fitted
 
 
 class MSR(RegressorMixin, BaseEstimator):
+    _parameter_constraints: dict = {
+        "delta": [Interval(Real, 0, None, closed="right")],
+        "esp": [Interval(Real, 0, None, closed="right")],
+    }
+
     def __init__(self, *, delta: float = 1e-4, esp: float = 1e-16):
         """
         MSR: Multiple Single Regression.
@@ -79,6 +87,8 @@ class MSR(RegressorMixin, BaseEstimator):
         self : object
             Fitted model.
         """
+        self._validate_params()  # type: ignore
+
         X, y = self._validate_data(  # type: ignore
             X=X,
             y=y,
