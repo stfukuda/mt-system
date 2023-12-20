@@ -1,4 +1,4 @@
-name: Ruff
+name: Check
 
 on:
   push:
@@ -6,19 +6,32 @@ on:
       - main
       - develop
     paths:
-      - "src/**/*.py"
-      - "test/**/*.py"
+      - 'src/**/*.py'
+      - 'tests/**/*.py'
   pull_request:
     branches:
       - main
       - develop
     paths:
-      - "src/**/*.py"
-      - "test/**/*.py"
+      - 'src/**/*.py'
+      - 'tests/**/*.py'
 
 jobs:
-  ruff:
+  check:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - uses: chartboost/ruff-action@v1
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Poetry
+        run: pipx install poetry
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.8'
+          cache: 'poetry'
+      - name: Install Dev Dependencies
+        run: poetry install --with dev
+      - name: Check
+        run: |
+          poetry run ruff check --fix ./src ./tests
+          poetry run bandit -c pyproject.toml -r ./src ./tests
