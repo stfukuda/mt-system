@@ -3,21 +3,18 @@ name: Test
 on:
   workflow_run:
     workflows:
-      - "Ruff"
+      - "Check"
     types:
       - "completed"
     branches:
       - main
       - develop
-    paths:
-      - "src/**/*.py"
-      - "test/**/*.py"
 
 permissions: {}
 
 jobs:
-  setup-and-test:
-    name: Build and Test (Python ${{ matrix.python-version }})
+  test:
+    name: Test (Python${{ matrix.python-version }})
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
@@ -25,31 +22,29 @@ jobs:
         python-version: ["3.8", "3.9", "3.10", "3.11", "3.12"]
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
-      - name: Setup Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v4
+        uses: actions/checkout@v4
+      - name: Setup Poetry
+        run: pipx install poetry
+      - name: Setup Python
+        uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python-version }}
-      - name: Setup Poetry
-        run: |
-          curl -sSL https://install.python-poetry.org | python3 -
-          echo "$HOME/.poetry/bin" >> $GITHUB_PATH
-      - name: Install Dependencies
-        run: |
-          poetry install --with dev,test
-      - name: Test with pytest
+          cache: 'poetry'
+      - name: Install Test Dependencies
+        run: poetry install --with Test
+      - name: Test
         run: |
           poetry run pytest --cov=src --cov-report=term-missing --junit-xml results/pytest.xml
         continue-on-error: true
-      - name: Upload Test Results
-        if: always()
-        uses: actions/upload-artifact@v3
+      - name: Upload Test Result
+        if: ${{ success() }}
+        uses: actions/upload-artifact@v4
         with:
-          name: Test Results (Python ${{ matrix.python-version }})
+          name: Test Result (Python${{ matrix.python-version }})
           path: results/*.xml
   publish-test-results:
     name: Publish Test Results
-    needs: setup-and-test
+    needs: test
     runs-on: ubuntu-latest
     permissions:
       checks: write
@@ -57,7 +52,7 @@ jobs:
     if: always()
     steps:
       - name: Download Artifacts
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           path: artifacts
       - name: Publish Test Results

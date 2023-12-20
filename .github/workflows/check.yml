@@ -1,0 +1,37 @@
+name: Check
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+    paths:
+      - 'src/**/*.py'
+      - 'tests/**/*.py'
+  pull_request:
+    branches:
+      - main
+      - develop
+    paths:
+      - 'src/**/*.py'
+      - 'tests/**/*.py'
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Poetry
+        run: pipx install poetry
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.8'
+          cache: 'poetry'
+      - name: Install Dev Dependencies
+        run: poetry install --with dev
+      - name: Check
+        run: |
+          poetry run ruff check --fix ./src ./tests
+          poetry run bandit -c pyproject.toml -r ./src ./tests

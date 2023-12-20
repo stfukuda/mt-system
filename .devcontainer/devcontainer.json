@@ -3,9 +3,6 @@
   "image": "python:3.8",
   "workspaceFolder": "/workspace",
   "workspaceMount": "source=${localWorkspaceFolder},target=/workspace,type=bind,consistency=cached",
-  "remoteEnv": {
-    "PATH": "/root/.local/bin:${containerEnv:PATH}"
-  },
   "runArgs": [
     "--name",
     "mt-system"
