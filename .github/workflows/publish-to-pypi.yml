@@ -17,13 +17,12 @@ jobs:
         uses: actions/checkout@v4
       - name: Get Tags
         run: git fetch --prune --unshallow --tags
-      - name: Setup Poetry3.8
+      - name: Setup Poetry
         run: pipx install poetry
-      - name: Setup Python
+      - name: Setup Python3.8
         uses: actions/setup-python@v5
         with:
           python-version: 3.8
-          cache: 'poetry'
       - name: Install Dependencies
         run: poetry install --no-root
       - name: Build
