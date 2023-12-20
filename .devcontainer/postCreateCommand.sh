@@ -18,8 +18,8 @@ npm i -g npm git-cz
 # Poetry
 python3 -m pip install -U pip setuptools wheel
 python3 -m pip install -U --user pipx
-python3 -m pipx ensurepath --force
-python3 -m pipx completions
+python3 -m pipx ensurepath
+export PATH=$PATH:/root/.local/bin
 pipx install poetry
 poetry self add poetry-plugin-export
 poetry self add "poetry-dynamic-versioning[plugin]"
