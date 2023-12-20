@@ -152,7 +152,6 @@ class MT(BaseEstimator):
             std_X = X - self.mean_[None, :]
             self.covariance_ = np.cov(std_X, rowvar=False)
         else:
-            std_X = (X - self.mean_[None, :]) / (self.scale_[None, :] + self.esp)
             self.covariance_ = np.eye(k)
 
         self.precision_ = self._get_precision(self.covariance_)
