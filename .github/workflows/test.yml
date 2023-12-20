@@ -30,7 +30,7 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
       - name: Install Test Dependencies
-        run: poetry install --with Test
+        run: poetry install --with test
       - name: Test
         run: |
           poetry run pytest --cov=src --cov-report=term-missing --junit-xml results/pytest.xml
