@@ -1,34 +1,33 @@
 name: Check
 
 on:
-  push:
-    branches:
-      - main
-      - develop
-    paths:
-      - 'src/**/*.py'
-      - 'tests/**/*.py'
   pull_request:
     branches:
       - main
       - develop
     paths:
-      - 'src/**/*.py'
-      - 'tests/**/*.py'
+      - "src/**/*.py"
+      - "tests/**/*.py"
 
 jobs:
   check:
+    name: Check
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - name: Setup Poetry
-        run: pipx install poetry
-      - name: Setup Python
+      - name: Setup Python3.8
         uses: actions/setup-python@v5
         with:
-          python-version: '3.8'
-      - name: Install Dev Dependencies
+          python-version: "3.8"
+      - name: Setup Poetry
+        run: |
+          python3 -m pip install -U pip setuptools wheel
+          python3 -m pip install -U --user pipx
+          python3 -m pipx ensurepath --force
+          pipx install poetry
+          poetry self add "poetry-dynamic-versioning[plugin]"
+      - name: Install dev dependencies
         run: poetry install --with dev
       - name: Check
         run: |
