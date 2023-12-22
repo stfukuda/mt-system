@@ -82,6 +82,11 @@ repos:
           # - "--top-keys comma,separated,keys" # Keys to keep at the top of mappings.
       # - id: requirements-txt-fixer # Sorts entries in requirements.txt and constraints.txt and removes incorrect entry for pkg-resources==0.0.0.
       # - id: sort-simple-yaml # Sorts simple YAML files which consist only of top-level keys, preserving comments and blocks.
+        exclude: |
+          (?x)(
+            ^.devcontainer/devcontainer.json$|
+            ^.vscode/launch.json$
+          )
       - id: trailing-whitespace # Trims trailing whitespace.
         args:
           - "--markdown-linebreak-ext=md" # To preserve Markdown hard linebreaks (or other extensions used by your markdownfiles).
