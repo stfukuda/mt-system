@@ -9,6 +9,7 @@ help:
 	@echo "  sync    Synchronize development environments"
 	@echo "  update  Update the project dependencies"
 	@echo "  check   Run formatters and linters to the source code"
+	@echo "  test    Tests and coverage measurements"
 	@echo "  docs    Build the project documentation"
 	@echo "  build   Build the project to python package and upload to pypi"
 	@echo "  clean   Clean up generated files"
@@ -51,6 +52,10 @@ check:
 	-@poetry run ruff format ./src ./tests
 	-@poetry run ruff check ./src ./tests --fix
 	-@poetry run bandit -c pyproject.toml -r ./src ./tests
+
+.PHONY: test
+test:
+	@poetry run pytest --cov=src --cov-report=term-missing -n 1 tests/
 
 .PHONY: docs
 docs:
