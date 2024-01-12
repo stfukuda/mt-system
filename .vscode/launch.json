@@ -1,13 +1,13 @@
 {
-  "configurations": [
-    {
-      "console": "integratedTerminal",
-      "justMyCode": true,
-      "name": "Python: Current file",
-      "program": "${file}",
-      "request": "launch",
-      "type": "python"
-    }
-  ],
-  "version": "0.2.0"
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Python: Current File",
+            "type": "python",
+            "request": "launch",
+            "program": "${file}",
+            "console": "integratedTerminal",
+            "justMyCode": true
+        }
+    ]
 }
