@@ -1,91 +1,91 @@
 {
-  "[json]": {
-    "editor.quickSuggestions": {
-      "strings": true
+    "[json]": {
+        "editor.quickSuggestions": {
+            "strings": true
+        },
+        "editor.suggest.insertMode": "replace"
     },
-    "editor.suggest.insertMode": "replace"
-  },
-  "[markdown]": {
-    "diffEditor.ignoreTrimWhitespace": false,
-    "editor.defaultFormatter": "DavidAnson.vscode-markdownlint",
-    "editor.quickSuggestions": {
-      "comments": "off",
-      "other": "off",
-      "strings": "off"
+    "[markdown]": {
+        "diffEditor.ignoreTrimWhitespace": false,
+        "editor.defaultFormatter": "DavidAnson.vscode-markdownlint",
+        "editor.quickSuggestions": {
+            "comments": "off",
+            "other": "off",
+            "strings": "off"
+        },
+        "editor.unicodeHighlight.ambiguousCharacters": false,
+        "editor.unicodeHighlight.invisibleCharacters": false,
+        "editor.wordWrap": "on",
+        "files.trimTrailingWhitespace": false
     },
-    "editor.unicodeHighlight.ambiguousCharacters": false,
-    "editor.unicodeHighlight.invisibleCharacters": false,
-    "editor.wordWrap": "on",
-    "files.trimTrailingWhitespace": false
-  },
-  "[python]": {
-    "editor.defaultFormatter": "charliermarsh.ruff",
-    "editor.rulers": [
-      72,
-      76,
-      80,
-      88
+    "[python]": {
+        "editor.defaultFormatter": "charliermarsh.ruff",
+        "editor.rulers": [
+            72,
+            76,
+            80,
+            88
+        ]
+    },
+    "[toml]": {
+        "editor.defaultFormatter": "tamasfe.even-better-toml"
+    },
+    "[yaml]": {
+        "diffEditor.ignoreTrimWhitespace": false,
+        "editor.autoIndent": "keep",
+        "editor.defaultFormatter": "redhat.vscode-yaml",
+        "editor.insertSpaces": true,
+        "editor.quickSuggestions": {
+            "comments": false,
+            "other": true,
+            "strings": true
+        },
+        "editor.tabSize": 2
+    },
+    "autoDocstring.docstringFormat": "numpy",
+    "autoDocstring.startOnNewLine": true,
+    "bandit.args": [
+        "-c",
+        "pyproject.toml"
+    ],
+    "bandit.path": [
+        "${workspaceFolder}/.venv/Scripts/bandit.exe",
+        "/root/.local/share/pipx/venvs/poetry/bin/bandit"
+    ],
+    "editor.codeActionsOnSave": {
+        "source.fixAll": "explicit",
+        "source.fixAll.markdownlint": "explicit",
+        "source.organizeImports": "explicit"
+    },
+    "editor.formatOnPaste": true,
+    "editor.formatOnSave": true,
+    "editor.formatOnType": true,
+    "editor.renderWhitespace": "all",
+    "explorer.confirmDragAndDrop": false,
+    "files.autoSave": "afterDelay",
+    "files.trimTrailingWhitespace": true,
+    "markdownlint.ignore": [
+        "LICENSE"
+    ],
+    "python.analysis.completeFunctionParens": true,
+    "python.analysis.extraPaths": [
+        "${workspaceFolder}/.venv/Lib/site-packages/",
+        "/root/.local/share/pipx/venvs/poetry/lib/python3.8/site-packages/",
+        "${workspaceFolder}/src/"
+    ],
+    "python.analysis.typeCheckingMode": "basic",
+    "python.autoComplete.extraPaths": [
+        "${workspaceFolder}/.venv/Lib/site-packages/",
+        "/root/.local/share/pipx/venvs/poetry/lib/python3.8/site-packages/",
+        "${workspaceFolder}/src/"
+    ],
+    "python.defaultInterpreterPath": "/root/.local/share/pipx/venvs/poetry/bin/python3",
+    "python.envFile": "${workspaceFolder}/.env",
+    "python.terminal.activateEnvironment": false,
+    "python.testing.pytestEnabled": true,
+    "redhat.telemetry.enabled": true,
+    "ruff.path": [
+        "${workspaceFolder}/.venv/Scripts/ruff.exe",
+        "/root/.local/share/pipx/venvs/poetry/bin/ruff"
     ]
-  },
-  "[toml]": {
-    "editor.defaultFormatter": "tamasfe.even-better-toml"
-  },
-  "[yaml]": {
-    "diffEditor.ignoreTrimWhitespace": false,
-    "editor.autoIndent": "keep",
-    "editor.defaultFormatter": "redhat.vscode-yaml",
-    "editor.insertSpaces": true,
-    "editor.quickSuggestions": {
-      "comments": false,
-      "other": true,
-      "strings": true
-    },
-    "editor.tabSize": 2
-  },
-  "autoDocstring.docstringFormat": "numpy",
-  "autoDocstring.startOnNewLine": true,
-  "bandit.args": [
-    "-c",
-    "pyproject.toml"
-  ],
-  "bandit.path": [
-    "${workspaceFolder}/.venv/Scripts/bandit.exe",
-    "/root/.local/share/pipx/venvs/poetry/bin/bandit"
-  ],
-  "editor.codeActionsOnSave": {
-    "source.fixAll": "explicit",
-    "source.fixAll.markdownlint": "explicit",
-    "source.organizeImports": "explicit"
-  },
-  "editor.formatOnPaste": true,
-  "editor.formatOnSave": true,
-  "editor.formatOnType": true,
-  "editor.renderWhitespace": "all",
-  "explorer.confirmDragAndDrop": false,
-  "files.autoSave": "afterDelay",
-  "files.trimTrailingWhitespace": true,
-  "markdownlint.ignore": [
-    "LICENSE"
-  ],
-  "python.analysis.completeFunctionParens": true,
-  "python.analysis.extraPaths": [
-    "${workspaceFolder}/.venv/Lib/site-packages/",
-    "/root/.local/share/pipx/venvs/poetry/lib/python3.8/site-packages/",
-    "${workspaceFolder}/src/"
-  ],
-  "python.analysis.typeCheckingMode": "basic",
-  "python.autoComplete.extraPaths": [
-    "${workspaceFolder}/.venv/Lib/site-packages/",
-    "/root/.local/share/pipx/venvs/poetry/lib/python3.8/site-packages/",
-    "${workspaceFolder}/src/"
-  ],
-  "python.defaultInterpreterPath": "/root/.local/share/pipx/venvs/poetry/bin/python3",
-  "python.envFile": "${workspaceFolder}/.env",
-  "python.terminal.activateEnvironment": false,
-  "python.testing.pytestEnabled": true,
-  "redhat.telemetry.enabled": true,
-  "ruff.path": [
-    "${workspaceFolder}/.venv/Scripts/ruff.exe",
-    "/root/.local/share/pipx/venvs/poetry/bin/ruff"
-  ]
 }

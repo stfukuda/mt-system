@@ -1,12 +1,12 @@
 {
-  "recommendations": [
-    "ms-vscode.makefile-tools",
-    "njpwerner.autodocstring",
-    "nwgh.bandit",
-    "tamasfe.even-better-toml",
-    "DavidAnson.vscode-markdownlint",
-    "ms-python.python",
-    "charliermarsh.ruff",
-    "redhat.vscode-yaml"
-  ]
+    "recommendations": [
+        "njpwerner.autodocstring",
+        "nwgh.bandit",
+        "tamasfe.even-better-toml",
+        "ms-vscode.makefile-tools",
+        "DavidAnson.vscode-markdownlint",
+        "ms-python.python",
+        "charliermarsh.ruff",
+        "redhat.vscode-yaml"
+    ]
 }

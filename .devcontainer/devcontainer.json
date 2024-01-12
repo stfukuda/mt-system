@@ -1,12 +1,12 @@
 {
-  "name": "mt-system",
-  "image": "python:3.8",
-  "workspaceFolder": "/workspace",
-  "workspaceMount": "source=${localWorkspaceFolder},target=/workspace,type=bind,consistency=cached",
-  "runArgs": [
-    "--name",
-    "mt-system"
-  ],
-  "postCreateCommand": "./.devcontainer/postCreateCommand.sh",
-  "shutdownAction": "stopContainer"
+    "name": "mt-system",
+    "image": "python:3.8",
+    "workspaceFolder": "/workspace",
+    "workspaceMount": "source=${localWorkspaceFolder},target=/workspace,type=bind,consistency=cached",
+    "runArgs": [
+        "--name",
+        "mt-system"
+    ],
+    "postCreateCommand": "./.devcontainer/postCreateCommand.sh",
+    "shutdownAction": "stopContainer"
 }

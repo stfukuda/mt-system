@@ -42,6 +42,7 @@ repos:
       - id: detect-private-key # Checks for the existence of private keys.
       # - id: double-quote-string-fixer # This hook replaces double quoted strings with single quoted strings.
       - id: end-of-file-fixer # Makes sure files end in a newline and only a newline.
+        exclude: \.json$
       # - id: file-content-sorter # Sort the lines in specified files (defaults to alphabetical). You must provide the target files as input. Note that this hook WILL remove blank lines and does NOT respect any comments. All newlines will be converted to line feeds (\n).
         # args:
           # - "--ignore-case" # fold lower case to upper case characters.
@@ -83,10 +84,12 @@ repos:
       # - id: requirements-txt-fixer # Sorts entries in requirements.txt and constraints.txt and removes incorrect entry for pkg-resources==0.0.0.
       # - id: sort-simple-yaml # Sorts simple YAML files which consist only of top-level keys, preserving comments and blocks.
         exclude: |
-          (?x)(
-            ^.devcontainer/devcontainer.json$|
-            ^.vscode/launch.json$
-          )
+          (?x)^(
+            .devcontainer/devcontainer.json|
+            .vscode/extensions.json|
+            .vscode/launch.json|
+            .vscode/settings.json
+          )$
       - id: trailing-whitespace # Trims trailing whitespace.
         args:
           - "--markdown-linebreak-ext=md" # To preserve Markdown hard linebreaks (or other extensions used by your markdownfiles).
