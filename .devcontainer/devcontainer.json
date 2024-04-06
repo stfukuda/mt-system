@@ -8,5 +8,29 @@
         "mt-system"
     ],
     "postCreateCommand": "./.devcontainer/postCreateCommand.sh",
-    "shutdownAction": "stopContainer"
+    "shutdownAction": "stopContainer",
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "njpwerner.autodocstring",
+                "tamasfe.even-better-toml",
+                "GitHub.vscode-pull-request-github",
+                "eamodio.gitlens",
+                "charliermarsh.ruff",
+                "redhat.vscode-yaml",
+                "richie5um2.vscode-sort-json",
+                "ms-python.python",
+                "mhutchie.git-graph",
+                "oderwat.indent-rainbow",
+                "nwgh.bandit",
+                "goessner.mdmath",
+                "yzhang.markdown-all-in-one",
+                "DavidAnson.vscode-markdownlint",
+                "christian-kohler.path-intellisense",
+                "github.vscode-github-actions",
+                "MS-CEINTL.vscode-language-pack-ja",
+                "ms-vscode.makefile-tools"
+            ]
+        }
+    }
 }
