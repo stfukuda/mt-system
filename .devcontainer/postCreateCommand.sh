@@ -23,3 +23,10 @@ export PATH=$PATH:/root/.local/bin
 pipx install poetry
 poetry self add poetry-plugin-export
 poetry self add "poetry-dynamic-versioning[plugin]"
+
+# Run initialization process immediately after creating devcontainer
+if [ -d ".git" ]; then
+    make sync
+else
+    make setup
+fi
