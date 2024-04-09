@@ -1,8 +1,8 @@
 #!/bin/sh
 
-# Git-Flow
+# Install Vim, Git-Flow
 apt-get update
-apt-get install -y git-flow
+apt-get install -y vim git-flow
 
 # NVM
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
