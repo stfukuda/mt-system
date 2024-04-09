@@ -7,7 +7,7 @@
         "--name",
         "mt-system"
     ],
-    "postCreateCommand": "./.devcontainer/postCreateCommand.sh",
+    "postCreateCommand": "/bin/sh ./.devcontainer/postCreateCommand.sh",
     "shutdownAction": "stopContainer",
     "customizations": {
         "vscode": {
