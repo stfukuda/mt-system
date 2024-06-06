@@ -16,7 +16,7 @@ help:
 
 .PHONY: setup
 setup:
-	@if [ -d ./.git ]; then \
+	@if [ -d .git ]; then \
 		echo "Setup is already done."; \
 	else \
 		if command -v git &> /dev/null; then \
