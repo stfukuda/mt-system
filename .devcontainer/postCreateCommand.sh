@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # Install Vim, Git, Git-Flow
 apt-get update
