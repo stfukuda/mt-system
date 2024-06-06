@@ -2,7 +2,7 @@
 # See https://pre-commit.com/hooks.html for more hooks
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.5.0
+    rev: v4.6.0
     hooks:
       - id: check-added-large-files # Prevent giant files from being committed.
         args:
@@ -95,7 +95,7 @@ repos:
           - "--markdown-linebreak-ext=md" # To preserve Markdown hard linebreaks (or other extensions used by your markdownfiles).
           # If for some reason you want to treat all files as markdown, use --markdown-linebreak-ext=*.
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.3.5
+    rev: v0.4.8
     hooks:
       - id: ruff
         args: [--fix]
