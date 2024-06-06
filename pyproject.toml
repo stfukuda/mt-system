@@ -9,7 +9,16 @@ homepage = "https://github.com/stfukuda/mt-system.git"
 repository = "https://github.com/stfukuda/mt-system.git"
 documentation = "https://stfukuda.github.io/mt-system/"
 packages = [{ include = "mts", from = "src" }]
-include = ["README.md"]
+include = [
+    { path = "LICENSE", format = [
+        "sdist",
+        "wheel",
+    ] },
+    { path = "README.md", format = [
+        "sdist",
+        "wheel",
+    ] },
+]
 
 [tool.poetry.dependencies]
 python = "^3.8"

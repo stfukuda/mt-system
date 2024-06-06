@@ -1,8 +1,8 @@
-#!/bin/sh
+#!/bin/bash
 
-# Git-Flow
+# Install Vim, Git, Git-Flow
 apt-get update
-apt-get install -y git-flow
+apt-get install -y vim git git-flow
 
 # NVM
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
@@ -21,5 +21,12 @@ python3 -m pip install -U --user pipx
 python3 -m pipx ensurepath
 export PATH=$PATH:/root/.local/bin
 pipx install poetry
-poetry self add poetry-plugin-export
-poetry self add "poetry-dynamic-versioning[plugin]"
+pipx inject poetry poetry-plugin-export
+pipx inject poetry "poetry-dynamic-versioning[plugin]"
+
+# Run initialization process immediately after creating devcontainer
+if [ -d ".git" ]; then
+    make sync
+else
+    make setup
+fi
