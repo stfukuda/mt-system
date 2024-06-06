@@ -12,6 +12,8 @@ on:
 jobs:
   publish:
     runs-on: ubuntu-latest
+    permissions:
+      id-token: write
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -31,4 +33,6 @@ jobs:
       - name: Install Dependencies
         run: poetry install --no-root
       - name: Build
-        run: poetry publish --build -u __token__ -p ${{ secrets.PYPI_TOKEN }}
+        run: poetry build
+      - name: Publish package distributions to PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1

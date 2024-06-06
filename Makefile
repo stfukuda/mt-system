@@ -60,7 +60,7 @@ test:
 
 .PHONY: docs
 docs:
-	@poetry run sphinx-build -b html ./docs/source ./docs
+	@poetry run sphinx-build -b html ./docs/source ./docs/_build
 
 .PHONY: build
 build:
