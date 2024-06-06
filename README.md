@@ -6,8 +6,8 @@ Python library of MT system.
 
 This library requires:
 
-- Python (>=3.8)
-- scikit-learn (>=1.2.0)
+- Python (>=3.9)
+- scikit-learn (>=1.4.0)
 
 ## Installation
 
@@ -25,7 +25,7 @@ Describe how to use the library in this part.
 
 Development requires:
 
-- Python (>=3.8)
+- Python (>=3.9)
 - Poetry
 - Git
 - Make (Option)

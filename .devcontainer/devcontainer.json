@@ -1,6 +1,6 @@
 {
     "name": "mt-system",
-    "image": "python:3.8",
+    "image": "python:3.9",
     "workspaceFolder": "/workspace",
     "workspaceMount": "source=${localWorkspaceFolder},target=/workspace,type=bind,consistency=cached",
     "runArgs": [
