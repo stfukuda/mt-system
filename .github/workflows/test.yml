@@ -22,7 +22,7 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - name: Setup Python${{ matrix.python-version }}
+      - name: Setup Python
         uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python-version }}
@@ -33,15 +33,13 @@ jobs:
           python3 -m pipx ensurepath --force
           pipx install poetry
           pipx inject poetry "poetry-dynamic-versioning[plugin]"
-      - name: Install test dependencies
+      - name: Install Dependencies
         run: poetry install --with test
       - name: Test
-        run: poetry run pytest tests/
+        run: poetry run pytest ./tests
       - name: Coverage
-        if: matrix.python-version == 3.9
         run: poetry run pytest --cov=src --cov-report=term-missing --junitxml=pytest.xml tests/ | tee pytest-coverage.txt
       - name: Pytest coverage comment
-        if: matrix.python-version == 3.9
         uses: MishaKav/pytest-coverage-comment@main
         with:
           pytest-coverage-path: ./pytest-coverage.txt
