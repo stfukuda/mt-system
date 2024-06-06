@@ -27,7 +27,7 @@ jobs:
           python3 -m pip install -U --user pipx
           python3 -m pipx ensurepath --force
           pipx install poetry
-          poetry self add "poetry-dynamic-versioning[plugin]"
+          pipx inject poetry "poetry-dynamic-versioning[plugin]"
       - name: Install Dependencies
         run: poetry install --no-root
       - name: Build
