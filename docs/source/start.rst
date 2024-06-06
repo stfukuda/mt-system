@@ -4,8 +4,8 @@ Getting Started
 Dependencies
 ------------
 
-* Python (>=3.8)
-* scikit-learn (>=1.2.0)
+* Python (>=3.9)
+* scikit-learn (>=1.4.0)
 
 Installation
 ------------

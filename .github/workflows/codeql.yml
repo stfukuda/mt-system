@@ -20,17 +20,17 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
-      - name: Setup Python3.8
+      - name: Setup Python
         uses: actions/setup-python@v5
         with:
-          python-version: "3.8"
+          python-version: "3.9"
       - name: Setup Poetry
         run: |
           python3 -m pip install -U pip setuptools wheel
           python3 -m pip install -U --user pipx
           python3 -m pipx ensurepath --force
           pipx install poetry
-          poetry self add "poetry-dynamic-versioning[plugin]"
+          pipx inject poetry "poetry-dynamic-versioning[plugin]"
       - name: Install Dependencies
         run: |
           poetry install --with dev

@@ -21,8 +21,8 @@ include = [
 ]
 
 [tool.poetry.dependencies]
-python = "^3.8"
-scikit-learn = "^1.2.0"
+python = "^3.9"
+scikit-learn = "^1.4.0"
 
 [tool.poetry.group.dev]
 optional = true
@@ -49,7 +49,7 @@ sphinx_rtd_theme = "*"
 enable = true
 
 [tool.ruff]
-target-version = "py38"
+target-version = "py39"
 
 [tool.bandit]
 skips = ["B101", "B601"]
