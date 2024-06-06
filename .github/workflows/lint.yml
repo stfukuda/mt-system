@@ -1,4 +1,4 @@
-name: Check
+name: Linter
 
 on:
   pull_request:
@@ -10,8 +10,7 @@ on:
       - "tests/**/*.py"
 
 jobs:
-  check:
-    name: Check
+  lint:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -26,10 +25,10 @@ jobs:
           python3 -m pip install -U --user pipx
           python3 -m pipx ensurepath --force
           pipx install poetry
-          poetry self add "poetry-dynamic-versioning[plugin]"
-      - name: Install dev dependencies
+          pipx inject poetry "poetry-dynamic-versioning[plugin]"
+      - name: Install Dependencies
         run: poetry install --with dev
-      - name: Check
-        run: |
-          poetry run ruff check --fix ./src ./tests
-          poetry run bandit -c pyproject.toml -r ./src ./tests
+      - name: Check ruff
+        run: poetry run ruff check ./src ./tests
+      - name: Check bandit
+        run: poetry run bandit -c pyproject.toml -r ./src ./tests
