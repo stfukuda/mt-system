@@ -21,8 +21,8 @@ python3 -m pip install -U --user pipx
 python3 -m pipx ensurepath
 export PATH=$PATH:/root/.local/bin
 pipx install poetry
-poetry self add poetry-plugin-export
-poetry self add "poetry-dynamic-versioning[plugin]"
+pipx inject poetry poetry-plugin-export
+pipx inject poetry "poetry-dynamic-versioning[plugin]"
 
 # Run initialization process immediately after creating devcontainer
 if [ -d ".git" ]; then
