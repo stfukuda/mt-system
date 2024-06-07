@@ -1,49 +1,78 @@
-.PHONY: install, update, format, lint, test, html, build, publish-test, publish, clean
+default: help
 
-install:
-	@git init
-	@git commit --allow-empty -m "Initial commit"
-	@git add .
-	@git commit -m "Add template folder"
-	@poetry install
-	@git add poetry.lock
-	@git commit -m "Add poetry.lock"
-	@git checkout -b develop
+.PHONY: help
+help:
+	@echo "Usage: make [target]"
+	@echo ""
+	@echo "Targets:"
+	@echo "  setup   Setup git and the project dependencies"
+	@echo "  sync    Synchronize development environments"
+	@echo "  update  Update the project dependencies"
+	@echo "  check   Run formatters and linters to the source code"
+	@echo "  test    Tests and coverage measurements"
+	@echo "  docs    Build the project documentation"
+	@echo "  build   Build the project to python package and upload to pypi"
+	@echo "  clean   Clean up generated files"
+
+.PHONY: setup
+setup:
+	@if [ -d .git ]; then \
+		echo "Setup is already done."; \
+	else \
+		if command -v git &> /dev/null; then \
+			git init; \
+			git commit --allow-empty -m "initial commit"; \
+			git checkout -b develop; \
+			git add .; \
+			git commit -m "add template folder"; \
+			poetry install --with dev,test,docs; \
+			git add poetry.lock; \
+			git commit -m "add poetry.lock"; \
+			poetry run pre-commit install; \
+			poetry run pre-commit autoupdate; \
+			git add .pre-commit-config.yaml; \
+			git commit -m "update pre-commit hooks revision or tag"; \
+		else \
+			poetry install --with dev,test,docs; \
+		fi; \
+		echo "Setup is complete."; \
+	fi
+
+.PHONY: sync
+sync:
+	@poetry install --with dev,test,docs
 	@poetry run pre-commit install
-	@poetry run pre-commit autoupdate
-	@git add .pre-commit-config.yaml
-	@git commit -m "Update hooks revision or tag"
 
+.PHONY: update
 update:
-	@poetry update
+	@poetry update --with dev,test,docs
 	@poetry run pre-commit autoupdate
 
-format:
-	-@poetry run isort ./src ./tests
-	-@poetry run black ./src ./tests
+.PHONY: check
+check:
+	-@poetry run ruff format ./src ./tests
+	-@poetry run ruff check ./src ./tests --fix
+	-@poetry run bandit -c pyproject.toml -r ./src ./tests
 
-lint:
-	-@poetry run flake8 ./src ./tests --color auto
-	-@poetry run bandit -r ./src ./tests
-
+.PHONY: test
 test:
-	@poetry run tox
+	@poetry run pytest --cov=src --cov-report=term-missing -n 1 tests/
 
-html:
-	@poetry run sphinx-build -b html ./docs/source ./docs
+.PHONY: docs
+docs:
+	@poetry run sphinx-build -b html ./docs/source ./docs/_build
 
+.PHONY: build
 build:
-	@poetry build
+	@branch_name=$$(git rev-parse --abbrev-ref HEAD); \
+	git checkout main; \
+	poetry build; \
+	git checkout $$branch_name
 
-publish-test:
-	@poetry publish -r test-pypi
-
-publish:
-	@poetry publish
-
+.PHONY: clean
 clean:
-	-@poetry run pre-commit clean
-	-@rm -rf .tox
+	-@rm -rf .pytest_cache
 	-@rm -rf dist
 	-@rm -rf htmlcov
+	-@find ./ -name "__pycache__" -exec rm -rf {} \;
 	-@rm -rf .coverage

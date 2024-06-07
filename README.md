@@ -1,12 +1,13 @@
 # MT-system
 
-MT system library.
+Python library of MT system.
 
 ## Dependencies
 
 This library requires:
 
-- Python (>=3.8)
+- Python (>=3.9)
+- scikit-learn (>=1.4.0)
 
 ## Installation
 
@@ -24,9 +25,9 @@ Describe how to use the library in this part.
 
 Development requires:
 
-- Python (>=3.8)
+- Python (>=3.9)
 - Poetry
-- Git (Option)
+- Git
 - Make (Option)
 
 ### Source code
@@ -34,7 +35,7 @@ Development requires:
 You can check the latest sources with the command:
 
 ```shell
-git clone URL
+git clone https://github.com/stfukuda/mt-system.git
 ```
 
 ### Enviroment
