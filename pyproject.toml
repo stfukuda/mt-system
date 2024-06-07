@@ -1,37 +1,59 @@
 [tool.poetry]
 name = "mt-system"
-version = "0.1.0"
-description = "MT system library."
+version = "0.0.0"
+description = "Python library of MT system."
 authors = ["Shota Fukuda <st_fukuda@outlook.jp>"]
 license = "BSD-3-Clause"
 readme = "README.md"
-packages = [
-    {include = "mts", from = "src"},
+homepage = "https://github.com/stfukuda/mt-system.git"
+repository = "https://github.com/stfukuda/mt-system.git"
+documentation = "https://stfukuda.github.io/mt-system/"
+packages = [{ include = "mts", from = "src" }]
+include = [
+    { path = "LICENSE", format = [
+        "sdist",
+        "wheel",
+    ] },
+    { path = "README.md", format = [
+        "sdist",
+        "wheel",
+    ] },
 ]
-include = ["README.md"]
-exclude = ["src/mts/_msr.py", "src/mts/.gitkeep"]
 
 [tool.poetry.dependencies]
-python = "^3.8"
+python = ">=3.9,<3.13"
+scikit-learn = "1.4.0"
 
+[tool.poetry.group.dev]
+optional = true
 [tool.poetry.group.dev.dependencies]
-isort = "*"
-black = "*"
-flake8 = "*"
-bandit = {extras = ["toml"], version = "*"}
+ruff = "*"
+bandit = { extras = ["toml"], version = "*" }
 pre-commit = "*"
+
+[tool.poetry.group.test]
+optional = true
+[tool.poetry.group.test.dependencies]
 pytest = "*"
-tox = "*"
+pytest-cov = "*"
+pytest-xdist = "*"
+pandas = "*"
+
+[tool.poetry.group.docs]
+optional = true
+[tool.poetry.group.docs.dependencies]
 sphinx = "*"
 sphinx_rtd_theme = "*"
 
-[tool.isort]
-profile = "black"
-lines_after_imports = 2
+[tool.poetry-dynamic-versioning]
+enable = true
+
+[tool.ruff]
+target-version = "py39"
 
 [tool.bandit]
 skips = ["B101", "B601"]
 
 [build-system]
-requires = ["poetry-core>=1.0.0"]
-build-backend = "poetry.core.masonry.api"
+requires = ["poetry-core>=1.0.0", "poetry-dynamic-versioning>=1.0.0,<2.0.0"]
+build-backend = "poetry_dynamic_versioning.backend"
