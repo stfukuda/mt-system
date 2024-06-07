@@ -1,0 +1,46 @@
+name: Test
+
+on:
+  pull_request:
+    branches:
+      - main
+      - develop
+    paths:
+      - "src/**/*.py"
+      - "tests/**/*.py"
+
+jobs:
+  test:
+    name: Test (Python${{ matrix.python-version }})
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.9", "3.10", "3.11", "3.12"]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Setup Poetry
+        run: |
+          python3 -m pip install -U pip setuptools wheel
+          python3 -m pip install -U --user pipx
+          python3 -m pipx ensurepath --force
+          pipx install poetry
+          pipx inject poetry "poetry-dynamic-versioning[plugin]"
+      - name: Install Dependencies
+        run: poetry install --with test
+      - name: Test
+        run: poetry run pytest ./tests
+      - name: Coverage
+        run: poetry run pytest --cov=src --cov-report=term-missing --junitxml=pytest.xml tests/ | tee pytest-coverage.txt
+      - name: Pytest coverage comment
+        uses: MishaKav/pytest-coverage-comment@main
+        with:
+          pytest-coverage-path: ./pytest-coverage.txt
+          junitxml-path: ./pytest.xml

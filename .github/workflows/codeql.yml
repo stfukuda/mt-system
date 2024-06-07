@@ -1,0 +1,48 @@
+name: CodeQL
+
+on:
+  schedule:
+    # Run every day at midnight.
+    - cron: "0 0 * * *"
+
+jobs:
+  analyze:
+    name: Analyze
+    runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
+    strategy:
+      fail-fast: false
+      matrix:
+        language: ["python"]
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.9"
+      - name: Setup Poetry
+        run: |
+          python3 -m pip install -U pip setuptools wheel
+          python3 -m pip install -U --user pipx
+          python3 -m pipx ensurepath --force
+          pipx install poetry
+          pipx inject poetry "poetry-dynamic-versioning[plugin]"
+      - name: Install Dependencies
+        run: |
+          poetry install --with dev
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v2
+        with:
+          languages: ${{ matrix.language }}
+          config-file: ./.github/codeql/codeql-config.yml
+          setup-python-dependencies: false
+      - name: Autobuild
+        uses: github/codeql-action/autobuild@v2
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v2
+        with:
+          category: "/language:${{matrix.language}}"
