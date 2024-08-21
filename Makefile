@@ -31,7 +31,7 @@ setup:
 			poetry run pre-commit install; \
 			poetry run pre-commit autoupdate; \
 			git add .pre-commit-config.yaml; \
-			git commit -m "update pre-commit hooks revision or tag"; \
+			git commit --no-verify -m "update pre-commit hooks revision or tag"; \
 		else \
 			poetry install --with dev,test,docs; \
 		fi; \
