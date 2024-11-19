@@ -25,10 +25,9 @@ Describe how to use the library in this part.
 
 Development requires:
 
-- Python (>=3.9)
-- Poetry
-- Git
-- Make (Option)
+- [uv (For Python package and project manager)](https://github.com/astral-sh/uv)
+  - Python (>=3.9)
+- [Git](https://git-scm.com/)
 
 ### Source code
 
@@ -43,7 +42,7 @@ git clone https://github.com/stfukuda/mt-system.git
 After cloning the repository, you can install the development environment with the command:
 
 ```shell
-make install
+make setup
 ```
 
 ### Testing
@@ -57,7 +56,3 @@ make test
 ### Submitting a Pull Request
 
 If the test passes, send the pull request according to the format.
-
-## License
-
-[BSD-3-Clause License](LICENSE)

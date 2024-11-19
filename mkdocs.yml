@@ -1,0 +1,43 @@
+docs_dir: docs
+site_dir: site
+site_name: MT-system
+site_author: Shota Fukuda <st_fukuda@outlook.jp>
+copyright: Copyright &copy; 2022 Shota Fukuda <st_fukuda@outlook.jp>
+theme:
+  name: material
+  features:
+    - content.code.copy
+nav:
+  - Home: index.md
+  - "Getting Started": getting-started.md
+  - "API reference": api.md
+  - License: license.md
+plugins:
+  - search
+  - include-markdown
+  - mkdocstrings:
+      handlers:
+        python:
+          options:
+            allow_inspection: false
+            show_root_heading: true
+            show_root_full_path: false
+            members_order: source
+            summary:
+                attributes: true
+                functions: true
+                modules: false
+            docstring_style: numpy
+            docstring_options:
+                ignore_init_summary: true
+                trim_doctest_flags: false
+            docstring_section_style: table
+            merge_init_into_class: true
+markdown_extensions:
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences
