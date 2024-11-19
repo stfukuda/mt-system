@@ -27,7 +27,7 @@ setup:
 			git add .; \
 			git commit -m "add template folder"; \
 			git tag v0.1.0;\
-			uv sync --group lint --group test --group docs; \
+			uv sync --group lint --group test --group docs --no-cache; \
 			git add uv.lock _version.py; \
 			git commit -m "run 'uv sync' to initialize project's synchronization"; \
 			uv run pre-commit install; \
@@ -35,19 +35,19 @@ setup:
 			git add .pre-commit-config.yaml; \
 			git commit --no-verify -m "update pre-commit hooks revision or tag"; \
 		else \
-			uv sync --group lint --group test --group docs; \
+			uv sync --group lint --group test --group docs --no-cache; \
 		fi; \
 		echo "Setup is complete."; \
 	fi
 
 .PHONY: sync
 sync:
-	@uv sync --group lint --group test --group docs
+	@uv sync --group lint --group test --group docs --no-cache
 	@uv run pre-commit install
 
 .PHONY: update
 update:
-	@uv lock
+	@uv lock --no-cache
 	@uv run pre-commit autoupdate
 
 .PHONY: check
