@@ -69,8 +69,6 @@ repos:
         args:
           - "--branch" # May be specified multiple times to protect multiple branches.
           - "main" # Branch name.
-          - "--branch" # May be specified multiple times to protect multiple branches.
-          - "develop" # Branch name.
           # - "--pattern" # Protect branches that match a supplied regex. May be specified multiple times.
           # - "release/.*" # Branch pattern.
       - id: pretty-format-json # Checks that all your JSON files are pretty. "Pretty" here means that keys are sorted and indented. You can configure this with the following commandline options:
