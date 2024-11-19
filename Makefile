@@ -42,7 +42,7 @@ setup:
 
 .PHONY: sync
 sync:
-	@uv sync
+	@uv sync --group lint --group test --group docs
 	@uv run pre-commit install
 
 .PHONY: update
