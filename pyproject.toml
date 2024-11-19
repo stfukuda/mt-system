@@ -1,59 +1,58 @@
-[tool.poetry]
+[build-system]
+requires = ["hatchling", "hatch-vcs"]
+build-backend = "hatchling.build"
+
+[project]
 name = "mt-system"
-version = "0.0.0"
+dynamic = ["version"]
 description = "Python library of MT system."
-authors = ["Shota Fukuda <st_fukuda@outlook.jp>"]
-license = "BSD-3-Clause"
+authors = [
+    { name = "Shota Fukuda", email = "st_fukuda@outlook.jp" },
+]
+license = { file = "LICENSE" }
 readme = "README.md"
-homepage = "https://github.com/stfukuda/mt-system.git"
-repository = "https://github.com/stfukuda/mt-system.git"
-documentation = "https://stfukuda.github.io/mt-system/"
-packages = [{ include = "mts", from = "src" }]
-include = [
-    { path = "LICENSE", format = [
-        "sdist",
-        "wheel",
-    ] },
-    { path = "README.md", format = [
-        "sdist",
-        "wheel",
-    ] },
+requires-python = ">=3.9,<3.14"
+dependencies = [
+    "scikit-learn>=1.4.0",
 ]
 
-[tool.poetry.dependencies]
-python = ">=3.9,<3.13"
-scikit-learn = "^1.4.0"
+[project.urls]
+Homepage = "https://github.com/stfukuda/mt-system.git"
+Documentation = "https://stfukuda.github.io/mt-system/"
+# Source = "None"
+# Issues = "None"
+# Changelog = "None"
 
-[tool.poetry.group.dev]
-optional = true
-[tool.poetry.group.dev.dependencies]
-ruff = "*"
-bandit = { extras = ["toml"], version = "*" }
-pre-commit = "*"
-
-[tool.poetry.group.test]
-optional = true
-[tool.poetry.group.test.dependencies]
-pytest = "*"
-pytest-cov = "*"
-pytest-xdist = "*"
-pandas = "*"
-
-[tool.poetry.group.docs]
-optional = true
-[tool.poetry.group.docs.dependencies]
-sphinx = "*"
-sphinx_rtd_theme = "*"
-
-[tool.poetry-dynamic-versioning]
-enable = true
+[dependency-groups]
+dev = [
+    "pre-commit",
+    "pandas",
+]
+lint = [
+    "ruff",
+    "bandit[toml]",
+]
+test = [
+    "pytest",
+    "pytest-cov",
+    "pytest-xdist",
+]
+docs = [
+    "mkdocs",
+    "mkdocs-material",
+    "mkdocs-include-markdown-plugin",
+    "mkdocstrings[python]",
+]
 
 [tool.ruff]
 target-version = "py39"
+extend-include = [".git"]
 
 [tool.bandit]
 skips = ["B101", "B601"]
 
-[build-system]
-requires = ["poetry-core>=1.0.0", "poetry-dynamic-versioning>=1.0.0,<2.0.0"]
-build-backend = "poetry_dynamic_versioning.backend"
+[tool.hatch.version]
+source = "vcs"
+
+[tool.hatch.build.hooks.vcs]
+version-file = "_version.py"

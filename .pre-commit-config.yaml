@@ -2,7 +2,7 @@
 # See https://pre-commit.com/hooks.html for more hooks
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.6.0
+    rev: v5.0.0
     hooks:
       - id: check-added-large-files # Prevent giant files from being committed.
         args:
@@ -69,8 +69,6 @@ repos:
         args:
           - "--branch" # May be specified multiple times to protect multiple branches.
           - "main" # Branch name.
-          - "--branch" # May be specified multiple times to protect multiple branches.
-          - "develop" # Branch name.
           # - "--pattern" # Protect branches that match a supplied regex. May be specified multiple times.
           # - "release/.*" # Branch pattern.
       - id: pretty-format-json # Checks that all your JSON files are pretty. "Pretty" here means that keys are sorted and indented. You can configure this with the following commandline options:
@@ -95,13 +93,13 @@ repos:
           - "--markdown-linebreak-ext=md" # To preserve Markdown hard linebreaks (or other extensions used by your markdownfiles).
           # If for some reason you want to treat all files as markdown, use --markdown-linebreak-ext=*.
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.5.6
+    rev: v0.7.4
     hooks:
       - id: ruff
         args: [--fix]
       - id: ruff-format
   - repo: https://github.com/pycqa/bandit
-    rev: 1.7.9
+    rev: 1.7.10
     hooks:
       - id: bandit
         args:
