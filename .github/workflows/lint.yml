@@ -20,7 +20,7 @@ jobs:
       - name: Setup Python
         run: uv python install 3.9
       - name: Install the project
-        run: uv sync --no-group test --no-group docs
+        run: uv sync --group lint
       - name: Check by ruff
         run: uv run ruff check ./src ./tests
       - name: Check by bandit
