@@ -44,9 +44,6 @@ docs = [
     "mkdocstrings[python]",
 ]
 
-[tool.uv]
-default-groups = ["dev", "lint", "test", "docs"]
-
 [tool.ruff]
 target-version = "py39"
 extend-include = [".git"]
