@@ -14,6 +14,20 @@ from sklearn.utils.validation import check_is_fitted
 
 
 class T(RegressorMixin, BaseEstimator):
+    """
+    T(1), T(2), Ta and Tb methods.
+
+    The T(1), T(2), Ta and Tb methods are supervised learning methods used
+    for regression in quality engineering. The T(1) and T(2) methods divide
+    the training data into unit space and signal data, and learn the mean
+    from the unit space and the sensitivity and SN ratio from the signal
+    data. The Ta method does not divide the training data into unit space
+    and signal data, and learns the mean, sensitivity, and SN ratio from all
+    the training data. The Tb method also learns from all training data, but
+    for each element, the sample with the largest SN ratio is used as the
+    mean.
+    """
+
     _parameter_constraints: dict = {
         "tb": ["boolean"],
         "esp": [Interval(Real, 0, None, closed="right")],
@@ -24,17 +38,7 @@ class T(RegressorMixin, BaseEstimator):
         self, *, tb: bool = False, esp: float = 1e-16, is_simplified: bool = False
     ):
         """
-        T(1), T(2), Ta and Tb methods.
-
-        The T(1), T(2), Ta and Tb methods are supervised learning methods used
-        for regression in quality engineering. The T(1) and T(2) methods divide
-        the training data into unit space and signal data, and learn the mean
-        from the unit space and the sensitivity and SN ratio from the signal
-        data. The Ta method does not divide the training data into unit space
-        and signal data, and learns the mean, sensitivity, and SN ratio from all
-        the training data. The Tb method also learns from all training data, but
-        for each element, the sample with the largest SN ratio is used as the
-        mean.
+        Initialize the instance.
 
         Parameters
         ----------

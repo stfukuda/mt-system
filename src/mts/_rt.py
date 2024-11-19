@@ -15,6 +15,16 @@ from sklearn.utils.validation import check_is_fitted
 
 
 class RT(BaseEstimator):
+    """
+    RT method.
+
+    The RT method is an unsupervised learning method used for pattern
+    recognition in quality engineering. The method learns the mean of each
+    feature in unit space, the sensitivity and SN ratio of each sample, and
+    the associated covariance matrix of the sensitivity and SN ratio, and
+    computes MD values based on these values.
+    """
+
     _parameter_constraints: dict = {
         "ddof": [Interval(Integral, 0, None, closed="left")],
         "esp": [Interval(Real, 0, None, closed="right")],
@@ -31,13 +41,7 @@ class RT(BaseEstimator):
         return_sqrt: bool = False,
     ):
         """
-        RT method.
-
-        The RT method is an unsupervised learning method used for pattern
-        recognition in quality engineering. The method learns the mean of each
-        feature in unit space, the sensitivity and SN ratio of each sample, and
-        the associated covariance matrix of the sensitivity and SN ratio, and
-        computes MD values based on these values.
+        Initialize the instance.
 
         Parameters
         ----------

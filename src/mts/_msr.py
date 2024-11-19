@@ -15,6 +15,10 @@ from sklearn.utils.validation import check_is_fitted
 
 
 class MSR(RegressorMixin, BaseEstimator):
+    """
+    MSR: Multiple Single Regression.
+    """
+
     _parameter_constraints: dict = {
         "delta": [Interval(Real, 0, None, closed="right")],
         "esp": [Interval(Real, 0, None, closed="right")],
@@ -22,7 +26,7 @@ class MSR(RegressorMixin, BaseEstimator):
 
     def __init__(self, *, delta: float = 1e-4, esp: float = 1e-16):
         """
-        MSR: Multiple Single Regression.
+        Initialize the instance.
 
         Parameters
         ----------
