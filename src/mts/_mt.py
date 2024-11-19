@@ -17,6 +17,19 @@ from sklearn.utils.validation import check_is_fitted
 
 
 class MT(BaseEstimator):
+    """
+    MT, MTA and Standardized-Variation-Pressure methods.
+
+    The MT, MTA and SVP methods are unsupervised learning methods used for
+    pattern recognition in quality engineering. These methods learn the mean
+    and standard deviation of each feature and the inverse correlation
+    matrix of the training data, and compute MD values based on these
+    values. The training data is called the unit space and usually contains
+    only normal data. The MTA method learns an adjoint matrix instead of an
+    inverse matrix to deal with multicolinearity. The SVP method does not
+    require a correlation matrix.
+    """
+
     _parameter_constraints: dict = {
         "method": [StrOptions({"mt", "mta", "svp"})],
         "ddof": [Interval(Integral, 0, None, closed="left")],
@@ -39,16 +52,7 @@ class MT(BaseEstimator):
         return_sqrt: bool = False,
     ):
         """
-        MT, MTA and Standardized-Variation-Pressure methods.
-
-        The MT, MTA and SVP methods are unsupervised learning methods used for
-        pattern recognition in quality engineering. These methods learn the mean
-        and standard deviation of each feature and the inverse correlation
-        matrix of the training data, and compute MD values based on these
-        values. The training data is called the unit space and usually contains
-        only normal data. The MTA method learns an adjoint matrix instead of an
-        inverse matrix to deal with multicolinearity. The SVP method does not
-        require a correlation matrix.
+        Initialize the instance.
 
         Parameters
         ----------
