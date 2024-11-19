@@ -15,20 +15,13 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+      - name: Install uv
+        uses: astral-sh/setup-uv@v3
       - name: Setup Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: "3.9"
-      - name: Setup Poetry
-        run: |
-          python3 -m pip install -U pip setuptools wheel
-          python3 -m pip install -U --user pipx
-          python3 -m pipx ensurepath --force
-          pipx install poetry
-          pipx inject poetry "poetry-dynamic-versioning[plugin]"
-      - name: Install Dependencies
-        run: poetry install --with dev
-      - name: Check ruff
-        run: poetry run ruff check ./src ./tests
-      - name: Check bandit
-        run: poetry run bandit -c pyproject.toml -r ./src ./tests
+        run: uv python install 3.9
+      - name: Install the project
+        run: uv sync --group lint
+      - name: Check by ruff
+        run: uv run ruff check ./src ./tests
+      - name: Check by bandit
+        run: uv run bandit -c pyproject.toml -r ./src ./tests

@@ -10,8 +10,9 @@ help:
 	@echo "  update  Update the project dependencies"
 	@echo "  check   Run formatters and linters to the source code"
 	@echo "  test    Tests and coverage measurements"
-	@echo "  docs    Build the project documentation"
-	@echo "  build   Build the project to python package and upload to pypi"
+	@echo "  build   Build the project to python package"
+	@echo "  docs    Build the project to python package"
+	@echo "  serve   Build the project to python package"
 	@echo "  clean   Clean up generated files"
 
 .PHONY: setup
@@ -25,54 +26,59 @@ setup:
 			git checkout -b develop; \
 			git add .; \
 			git commit -m "add template folder"; \
-			poetry install --with dev,test,docs; \
-			git add poetry.lock; \
-			git commit -m "add poetry.lock"; \
-			poetry run pre-commit install; \
-			poetry run pre-commit autoupdate; \
+			git tag v0.1.0;\
+			uv sync --group lint --group test --group docs --no-cache; \
+			git add uv.lock _version.py; \
+			git commit -m "run 'uv sync' to initialize project's synchronization"; \
+			uv run pre-commit install; \
+			uv run pre-commit autoupdate; \
 			git add .pre-commit-config.yaml; \
-			git commit -m "update pre-commit hooks revision or tag"; \
+			git commit --no-verify -m "update pre-commit hooks revision or tag"; \
 		else \
-			poetry install --with dev,test,docs; \
+			uv sync --group lint --group test --group docs --no-cache; \
 		fi; \
 		echo "Setup is complete."; \
 	fi
 
 .PHONY: sync
 sync:
-	@poetry install --with dev,test,docs
-	@poetry run pre-commit install
+	@uv sync --group lint --group test --group docs --no-cache
+	@uv run pre-commit install
 
 .PHONY: update
 update:
-	@poetry update --with dev,test,docs
-	@poetry run pre-commit autoupdate
+	@uv lock --no-cache
+	@uv run pre-commit autoupdate
 
 .PHONY: check
 check:
-	-@poetry run ruff format ./src ./tests
-	-@poetry run ruff check ./src ./tests --fix
-	-@poetry run bandit -c pyproject.toml -r ./src ./tests
+	-@uv run ruff format ./src ./tests
+	-@uv run ruff check --fix ./src ./tests
+	-@uv run bandit -c pyproject.toml -r ./src ./tests
 
 .PHONY: test
 test:
-	@poetry run pytest --cov=src --cov-report=term-missing -n 1 tests/
-
-.PHONY: docs
-docs:
-	@poetry run sphinx-build -b html ./docs/source ./docs/_build
+	@uv run pytest --cov=src --cov-report=term-missing -n 1 ./tests/
 
 .PHONY: build
 build:
 	@branch_name=$$(git rev-parse --abbrev-ref HEAD); \
 	git checkout main; \
-	poetry build; \
+	uv build; \
 	git checkout $$branch_name
+
+.PHONY: docs
+docs:
+	@uv run mkdocs build
+
+.PHONY: serve
+serve:
+	@uv run mkdocs serve
 
 .PHONY: clean
 clean:
-	-@rm -rf .pytest_cache
-	-@rm -rf dist
-	-@rm -rf htmlcov
-	-@find ./ -name "__pycache__" -exec rm -rf {} \;
-	-@rm -rf .coverage
+	-@find ./ -type f -name "*.py[co]" -delete
+	-@find ./ -type d -name "__pycache__" -delete
+	-@find ./ -type d -name "dist" -delete
+	-@find ./ -type d -name "htmlcov" -delete
+	-@find ./ -type f -name ".coverage" -delete
