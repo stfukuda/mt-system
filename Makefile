@@ -23,6 +23,7 @@ setup:
 		if command -v git &> /dev/null; then \
 			git init; \
 			git commit --allow-empty -m "initial commit"; \
+			git branch gh-pages; \
 			git checkout -b develop; \
 			git add .; \
 			git commit -m "add template folder"; \
