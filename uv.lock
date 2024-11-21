@@ -1,5 +1,5 @@
 version = 1
-requires-python = ">=3.9, <3.14"
+requires-python = ">=3.9"
 resolution-markers = [
     "python_full_version < '3.11'",
     "python_full_version == '3.11.*'",
@@ -611,7 +611,7 @@ wheels = [
 
 [[package]]
 name = "mt-system"
-version = "2.0.2"
+version = "2.0.3.dev6+gf972f28.d20241121"
 source = { editable = "." }
 dependencies = [
     { name = "scikit-learn" },
