@@ -1,10 +1,10 @@
 [build-system]
-requires = ["hatchling", "hatch-vcs"]
+requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [project]
 name = "mt-system"
-dynamic = ["version"]
+version = "2.0.3"
 description = "Python library of MT system."
 authors = [
     { name = "Shota Fukuda", email = "st_fukuda@outlook.jp" },
@@ -72,9 +72,3 @@ skips = ["B101", "B601"]
 
 [tool.pytest.ini_options]
 pythonpath = "src"
-
-[tool.hatch.version]
-source = "vcs"
-
-[tool.hatch.build.hooks.vcs]
-version-file = "_version.py"
