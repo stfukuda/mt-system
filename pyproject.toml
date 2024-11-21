@@ -19,8 +19,8 @@ dependencies = [
 [project.urls]
 Homepage = "https://github.com/stfukuda/mt-system.git"
 Documentation = "https://stfukuda.github.io/mt-system/"
-# Source = "None"
-# Issues = "None"
+Source = "https://github.com/stfukuda/mt-system.git"
+Issues = "https://github.com/stfukuda/mt-system/issues"
 # Changelog = "None"
 
 [dependency-groups]
